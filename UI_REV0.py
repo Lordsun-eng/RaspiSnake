@@ -34,7 +34,7 @@ canvas.pack()
 root.after(5000, root.destroy)
 root.mainloop()
 # your console program can start here ...
-print ("How did you like my informative splash screen?")
+print ("RaspiSnakes")
 
 def Opn():
     window.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.stl"),("all files","*.*")))
@@ -111,7 +111,7 @@ btnOpn = Button(ToolboxGen, text="Open", width=10, command=Opn)
 btnOpn.grid(column=0, row=1)
 ToolboxGen.grid(row=0, column=1, sticky="nsew")
 
-window.title("GUI of Rasp Snakes")
+window.title("Rasp Snakes CAD Software VER 0.0.0")
  
 window.geometry('800x600')
 
