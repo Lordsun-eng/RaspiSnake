@@ -182,7 +182,7 @@ def Rec():
     axes.auto_scale_xyz(scale, scale, scale)
     
 
-    pass
+    
 def Sph():
     pass
 def Cyl():
