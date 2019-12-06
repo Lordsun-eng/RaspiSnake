@@ -13,31 +13,7 @@ from stl import mesh
 from mpl_toolkits import mplot3d
 from matplotlib import pyplot
 
-## Splash Screen
-# create a splash screen, 80% of display screen size, centered,
-# displaying a GIF image with needed info, disappearing after 5 seconds
-root = tk.Tk()
-# show no frame
-root.overrideredirect(True)
-width = root.winfo_screenwidth()
-height = root.winfo_screenheight()
-root.geometry('%dx%d+%d+%d' % (width*0.6, height*0.6, width*0.1, height*0.1))
 
-#assert os.path.exists(image_file)
-image = tk.PhotoImage(file="Splash.gif")
-canvas = tk.Canvas(root, height=height*0.6, width=width*0.6, bg="white")
-canvas.create_image(width*0.6/2, height*0.6/2, image=image)
-canvas.create_text(width*0.6/8, height*0.6/8, text="VER 0.0.0 ")
-canvas.pack()
-# show the splash screen for 5000 milliseconds then destroy
-root.after(5000, root.destroy)
-root.mainloop()
-# your console program can start here ...
-print ("RaspiSnakes")
-
-
-# find the max dimensions, so we can know the bounding box, getting the height,
-# width, length (because these are the step size)...
 def find_mins_maxs(obj):
     minx = maxx = miny = maxy = minz = maxz = None
     for p in obj.points:
@@ -94,13 +70,7 @@ def copy_obj(obj, dims, num_rows, num_cols, num_layers):
                 copies.append(_copy)
     return copies
 
-# Using an existing stl file:
-main_body = mesh.Mesh.from_file('RaspS.stl')
 
-minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(main_body)
-w1 = maxx - minx
-l1 = maxy - miny
-h1 = maxz - minz
 
 def New():
     data = np.zeros(100, dtype=mesh.Mesh.dtype)
@@ -187,6 +157,39 @@ def Sph():
     pass
 def Cyl():
     pass
+# Using an existing stl file:
+main_body = mesh.Mesh.from_file('RaspS.stl')
+
+minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(main_body)
+w1 = maxx - minx
+l1 = maxy - miny
+h1 = maxz - minz
+
+## Splash Screen
+# create a splash screen, 80% of display screen size, centered,
+# displaying a GIF image with needed info, disappearing after 5 seconds
+root = tk.Tk()
+# show no frame
+root.overrideredirect(True)
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+root.geometry('%dx%d+%d+%d' % (width*0.6, height*0.6, width*0.1, height*0.1))
+
+#assert os.path.exists(image_file)
+image = tk.PhotoImage(file="Splash.gif")
+canvas = tk.Canvas(root, height=height*0.6, width=width*0.6, bg="white")
+canvas.create_image(width*0.6/2, height*0.6/2, image=image)
+canvas.create_text(width*0.6/8, height*0.6/8, text="VER 0.0.0 ")
+canvas.pack()
+# show the splash screen for 5000 milliseconds then destroy
+root.after(5000, root.destroy)
+root.mainloop()
+# your console program can start here ...
+print ("RaspiSnakes")
+
+
+# find the max dimensions, so we can know the bounding box, getting the height,
+# width, length (because these are the step size)...
 
 window = tk.Tk()
 ToolboxCreat = tk.Frame(window)
