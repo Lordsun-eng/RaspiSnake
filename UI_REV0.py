@@ -1,18 +1,16 @@
-import tkinter as tk
-from tkinter.ttk import *
-from tkinter import filedialog
 import stl
 import math
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT
-from matplotlib.figure import Figure
-#import openmesh as om
 import numpy as np
-from stl import mesh
-from mpl_toolkits import mplot3d
-from matplotlib import pyplot
+import tkinter as tk
 
+from stl import mesh
+from tkinter.ttk import *
+import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
+
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+#from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT
+#import openmesh as om
 
 def find_mins_maxs(obj):
     minx = maxx = miny = maxy = minz = maxz = None
@@ -73,15 +71,16 @@ def copy_obj(obj, dims, num_rows, num_cols, num_layers):
 
 
 def New():
+
     data = np.zeros(100, dtype=mesh.Mesh.dtype)
     New = mesh.Mesh(data, remove_empty_areas=False)
     New.save('RaspS.stl', mode=stl.Mode.ASCII)
     currfile = mesh.Mesh.from_file('RaspS.stl')
-    Ploti = pyplot.figure(figsize=(6,5), dpi=100)
+    Ploti = plt.figure(figsize=(6,5), dpi=100)
     axes = mplot3d.Axes3D(Ploti)
     ax = axes.add_collection3d(mplot3d.art3d.Poly3DCollection(currfile.vectors))
     chart_type = FigureCanvasTkAgg(Ploti, window)
-    chart_type.get_tk_widget().grid(column=2, row=0)
+    chart_type.get_tk_widget().grid(column=2, row=1)
 
     # Auto scale to the mesh size
     scale = currfile.points.flatten(-1)
@@ -89,7 +88,7 @@ def New():
 
 
 def Opn():
-    window.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.stl"),("all files","*.*")))
+    window.filename =  tk.filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.stl"),("all files","*.*")))
     fileout =window.filename
     copies = copy_obj(main_body, (w1, l1, h1), 2, 2, 1)
 
@@ -106,11 +105,11 @@ def Opn():
 
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
     currfile = mesh.Mesh.from_file('RaspS.stl')
-    Ploti = pyplot.figure(figsize=(6,5), dpi=100)
+    Ploti = plt.figure(figsize=(6,5), dpi=100)
     axes = mplot3d.Axes3D(Ploti)
     ax = axes.add_collection3d(mplot3d.art3d.Poly3DCollection(currfile.vectors))
     chart_type = FigureCanvasTkAgg(Ploti, window)
-    chart_type.get_tk_widget().grid(column=2, row=0)
+    chart_type.get_tk_widget().grid(column=2, row=1)
 
     # Auto scale to the mesh size
     scale = currfile.points.flatten(-1)
@@ -154,9 +153,49 @@ def Rec():
 
     
 def Sph():
-    pass
+    
+    r = 3
+        
+    fig = plt.figure(figsize=(6,5), dpi=100)            
+    canvas = FigureCanvasTkAgg(fig, window)
+    canvas.draw()
+
+    u = np.linspace(0, 2 * np.pi, 100)
+    v = np.linspace(0, np.pi, 100)
+    x = np.outer(np.cos(u), np.sin(v))
+    y = np.outer(np.sin(u), np.sin(v))
+    z = np.outer(np.ones(np.size(u)), np.cos(v))
+
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_surface(r*x, r*y, r*z)
+
+    canvas.get_tk_widget().grid(column=2, row=1)
+    
+    
 def Cyl():
     pass
+
+def Pyr():
+    fig = plt.figure(figsize=(6,5), dpi=100)
+
+    canvas = FigureCanvasTkAgg(fig, window)
+    canvas.draw()
+        
+    ax = fig.add_subplot(111, projection='3d')
+
+    # vertices of a pyramid
+    v = np.array([[-1, -1, -1], [1, -1, -1], [1, 1, -1],  [-1, 1, -1], [0, 0, 1]])
+    ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
+
+    # generate list of sides' polygons of our pyramid
+    verts = [ [v[0],v[1],v[4]], [v[0],v[3],v[4]],[v[2],v[1],v[4]], [v[2],v[3],v[4]], [v[0],v[1],v[2],v[3]]]
+
+    # plot sides
+    ax.add_collection3d(mplot3d.art3d.Poly3DCollection(verts, 
+    facecolors='cyan', linewidths=1, edgecolors='r', alpha=.25))
+
+    canvas.get_tk_widget().grid(column=2, row=1)
+
 # Using an existing stl file:
 main_body = mesh.Mesh.from_file('RaspS.stl')
 
@@ -192,28 +231,34 @@ print ("RaspiSnakes")
 # width, length (because these are the step size)...
 
 window = tk.Tk()
-ToolboxCreat = tk.Frame(window)
 window.iconbitmap('RaspSNK.ico')
-btnRec = Button(ToolboxCreat, text="Rectancle", width=10, command=Rec)
-btnRec.grid(column=0, row=1)
-btnSph = Button(ToolboxCreat, text="Sphere", width=10, command=Sph)
-btnSph.grid(column=0, row=2)
-btnCyl = Button(ToolboxCreat, text="Cylander", width=10, command=Cyl)
-btnCyl.grid(column=0, row=3)
-ToolboxCreat.grid(row=0, column=0, sticky="nsew")
 
-
+# File buttons
 ToolboxGen=tk.Frame(window)
 btnNew = Button(ToolboxGen, text="New", width=10, command=New)
-btnNew.grid(column=0, row=1)
+btnNew.grid(column=0, row=1, padx=2)
 btnOpn = Button(ToolboxGen, text="Open", width=10, command=Opn)
-btnOpn.grid(column=0, row=2)
-ToolboxGen.grid(row=0, column=1, sticky="nsew")
+btnOpn.grid(column=1, row=1, padx=3)
+ToolboxGen.grid(row=0, column=0, sticky="nsew", padx=10, pady=15)
+
+# Figure plotting buttons
+ToolboxCreat = tk.Frame(window)
+lb = Label(ToolboxCreat, text="Choose a figure:\n")
+lb.grid(column=0, row=0, padx=0, pady=0)
+btnRec = Button(ToolboxCreat, text="Rectancle", width=10, command=Rec)
+btnRec.grid(column=0, row=1, pady=3)
+btnSph = Button(ToolboxCreat, text="Sphere", width=10, command=Sph)
+btnSph.grid(column=0, row=2, pady=2)
+btnCyl = Button(ToolboxCreat, text="Cylinder", width=10, command=Cyl)
+btnCyl.grid(column=0, row=3, pady=3)
+btnPyr = Button(ToolboxCreat, text="Pyramid", width=10, command=Pyr)
+btnPyr.grid(column=0, row=4, pady=2)
+ToolboxCreat.grid(row=1, column=0, sticky="nsew", padx=40, pady=20)
+
 
 window.title("Rasp Snakes CAD Software VER 0.0.0")
  
 window.geometry('800x600')
-
 
 
 
