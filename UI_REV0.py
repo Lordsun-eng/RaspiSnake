@@ -71,7 +71,9 @@ def copy_obj(obj, dims, num_rows, num_cols, num_layers):
 
 
 def New():
-
+    lb = Label(window, text=35*" ")
+    lb.grid(column=2, row=0)
+    
     data = np.zeros(100, dtype=mesh.Mesh.dtype)
     New = mesh.Mesh(data, remove_empty_areas=False)
     New.save('RaspS.stl', mode=stl.Mode.ASCII)
@@ -88,6 +90,9 @@ def New():
 
 
 def Opn():
+    lb = Label(window, text=35*" ")
+    lb.grid(column=2, row=0)
+    
     window.filename =  tk.filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.stl"),("all files","*.*")))
     fileout =window.filename
     copies = copy_obj(main_body, (w1, l1, h1), 2, 2, 1)
@@ -116,6 +121,11 @@ def Opn():
     axes.auto_scale_xyz(scale, scale, scale)
     
 def Rec():
+    lb = Label(window, text=35*" ")
+    lb.grid(column=2, row=0)
+    lb = Label(window, text="Rectangular prism")
+    lb.grid(column=2, row=0)
+    
     mesh = om.TriMesh()
     # add a a couple of vertices to the mesh
     vh0 = mesh.add_vertex([0, 1, 0])
@@ -153,7 +163,10 @@ def Rec():
 
     
 def Sph():
-    
+    lb = Label(window, text=35*" ")
+    lb.grid(column=2, row=0)
+    lb = Label(window, text="Sphere")
+    lb.grid(column=2, row=0)
     r = 3
         
     fig = plt.figure(figsize=(6,5), dpi=100)            
@@ -173,6 +186,10 @@ def Sph():
     
     
 def Cyl():
+    lb = Label(window, text=35*" ")
+    lb.grid(column=2, row=0)
+    lb = Label(window, text="Cylinder")
+    lb.grid(column=2, row=0)
     
     fig = plt.figure(figsize=(6,5), dpi=100)
     canvas = FigureCanvasTkAgg(fig, window)
@@ -198,8 +215,12 @@ def Cyl():
     canvas.get_tk_widget().grid(column=2, row=1)
 
 def Pyr():
+    lb = Label(window, text=35*" ")
+    lb.grid(column=2, row=0)
+    lb = Label(window, text="Pyramid")
+    lb.grid(column=2, row=0)
+    
     fig = plt.figure(figsize=(6,5), dpi=100)
-
     canvas = FigureCanvasTkAgg(fig, window)
     canvas.draw()
         
