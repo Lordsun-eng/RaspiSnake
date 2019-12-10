@@ -1,3 +1,9 @@
+# Shams Torabnia & Shukhrat Khuseynov
+# GUI & 3D plotting (STL?)
+# version 1.0
+
+# (3d plotting algorithms were obtained from freely shared codes [stackoverflow, github, etc.])
+
 import stl
 import math
 import numpy as np
@@ -10,7 +16,6 @@ from mpl_toolkits import mplot3d
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 #from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT
-#import openmesh as om
 
 def find_mins_maxs(obj):
     minx = maxx = miny = maxy = minz = maxz = None
@@ -73,16 +78,20 @@ def copy_obj(obj, dims, num_rows, num_cols, num_layers):
 def New():
     lb = Label(window, text=35*" ")
     lb.grid(column=2, row=0)
+
+    #fig = plt.figure(figsize=(6,5), dpi=100)
+    #canvas = FigureCanvasTkAgg(fig, window)
+    #canvas.draw()
     
     data = np.zeros(100, dtype=mesh.Mesh.dtype)
     New = mesh.Mesh(data, remove_empty_areas=False)
     New.save('RaspS.stl', mode=stl.Mode.ASCII)
     currfile = mesh.Mesh.from_file('RaspS.stl')
-    Ploti = plt.figure(figsize=(6,5), dpi=100)
-    axes = mplot3d.Axes3D(Ploti)
+    fig = plt.figure(figsize=(6,5), dpi=100)
+    axes = mplot3d.Axes3D(fig)
     ax = axes.add_collection3d(mplot3d.art3d.Poly3DCollection(currfile.vectors))
-    chart_type = FigureCanvasTkAgg(Ploti, window)
-    chart_type.get_tk_widget().grid(column=2, row=1)
+    canvas = FigureCanvasTkAgg(fig, window)
+    canvas.get_tk_widget().grid(column=2, row=1)
 
     # Auto scale to the mesh size
     scale = currfile.points.flatten(-1)
@@ -92,6 +101,12 @@ def New():
 def Opn():
     lb = Label(window, text=35*" ")
     lb.grid(column=2, row=0)
+    lb = Label(window, text="STL file")
+    lb.grid(column=2, row=0)
+
+    #fig = plt.figure(figsize=(6,5), dpi=100)
+    #canvas = FigureCanvasTkAgg(fig, window)
+    #canvas.draw()
     
     window.filename =  tk.filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.stl"),("all files","*.*")))
     fileout =window.filename
@@ -109,58 +124,73 @@ def Opn():
                                         [copy.data for copy in copies2]))
 
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
+    
     currfile = mesh.Mesh.from_file('RaspS.stl')
-    Ploti = plt.figure(figsize=(6,5), dpi=100)
-    axes = mplot3d.Axes3D(Ploti)
+    fig = plt.figure(figsize=(6,5), dpi=100)
+    axes = mplot3d.Axes3D(fig)
     ax = axes.add_collection3d(mplot3d.art3d.Poly3DCollection(currfile.vectors))
-    chart_type = FigureCanvasTkAgg(Ploti, window)
-    chart_type.get_tk_widget().grid(column=2, row=1)
+    canvas = FigureCanvasTkAgg(fig, window)
+    canvas.get_tk_widget().grid(column=2, row=1)
 
     # Auto scale to the mesh size
     scale = currfile.points.flatten(-1)
     axes.auto_scale_xyz(scale, scale, scale)
     
-def Rec():
+def Cub():
     lb = Label(window, text=35*" ")
     lb.grid(column=2, row=0)
     lb = Label(window, text="Rectangular prism")
     lb.grid(column=2, row=0)
-    
-    mesh = om.TriMesh()
-    # add a a couple of vertices to the mesh
-    vh0 = mesh.add_vertex([0, 1, 0])
-    vh1 = mesh.add_vertex([1, 0, 0])
-    vh2 = mesh.add_vertex([2, 1, 0])
-    vh3 = mesh.add_vertex([0,-1, 0])
-    vh4 = mesh.add_vertex([2,-1, 0])
-    
-    # add a couple of faces to the mesh
-    fh0 = mesh.add_face(vh0, vh1, vh2)
-    fh1 = mesh.add_face(vh1, vh3, vh4)
-    fh2 = mesh.add_face(vh0, vh3, vh1)
-    
-    # add another face to the mesh, this time using a list
-    vh_list = [vh2, vh1, vh4]
-    fh3 = mesh.add_face(vh_list)
-    
-    # get the point with vertex handle vh0
-    point = mesh.point(vh0)
-    
-    # get all points of the mesh
-    point_array = mesh.points()
-    
-    # translate the mesh along the x-axis
-    point_array += np.array([1, 0, 0])
-    
-    # write and read meshes
-    om.write_mesh('test.stl', mesh)
-    your_mesh = mesh.Mesh.from_file('test.stl')
-    axes.add_collection3d(mplot3d.art3d.Poly3DCollection(your_mesh.vectors))
-    # Auto scale to the mesh size
-    scale = your_mesh.points.flatten(-1)
-    axes.auto_scale_xyz(scale, scale, scale)
-    
 
+    fig = plt.figure(figsize=(6,5), dpi=100)
+    canvas = FigureCanvasTkAgg(fig, window)
+    canvas.draw()
+    ax = fig.add_subplot(111, projection='3d')
+
+    cube_definition = [(0,0,0), (0,1,0), (2,0,0), (0,0,3)]
+    
+    cube_definition_array = [
+        np.array(list(item))
+        for item in cube_definition
+    ]
+
+    points = []
+    points += cube_definition_array
+    vectors = [
+        cube_definition_array[1] - cube_definition_array[0],
+        cube_definition_array[2] - cube_definition_array[0],
+        cube_definition_array[3] - cube_definition_array[0]
+    ]
+
+    points += [cube_definition_array[0] + vectors[0] + vectors[1]]
+    points += [cube_definition_array[0] + vectors[0] + vectors[2]]
+    points += [cube_definition_array[0] + vectors[1] + vectors[2]]
+    points += [cube_definition_array[0] + vectors[0] + vectors[1] + vectors[2]]
+
+    points = np.array(points)
+
+    edges = [
+        [points[0], points[3], points[5], points[1]],
+        [points[1], points[5], points[7], points[4]],
+        [points[4], points[2], points[6], points[7]],
+        [points[2], points[6], points[3], points[0]],
+        [points[0], points[2], points[4], points[1]],
+        [points[3], points[6], points[7], points[5]]
+    ]
+
+    faces = mplot3d.art3d.Poly3DCollection(edges, linewidths=1, edgecolors='k')
+    faces.set_facecolor((0,0,1,0.1))
+
+    ax.add_collection3d(faces)
+
+    # Plot the points themselves to force the scaling of the axes
+    ax.scatter(points[:,0], points[:,1], points[:,2], s=0)
+
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.set_zlabel("Z")
+    
+    canvas.get_tk_widget().grid(column=2, row=1)
     
 def Sph():
     lb = Label(window, text=35*" ")
@@ -182,6 +212,10 @@ def Sph():
     ax = fig.add_subplot(111, projection='3d')
     ax.plot_surface(r*x, r*y, r*z)
 
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.set_zlabel("Z")
+    
     canvas.get_tk_widget().grid(column=2, row=1)
     
     
@@ -208,6 +242,7 @@ def Cyl():
     ax = fig.add_subplot(111, projection='3d')
     ax.plot_surface(x, y, z, alpha=0.2, rstride=rstride, cstride=cstride)
     ax.plot_surface(x, -y, z, alpha=0.2, rstride=rstride, cstride=cstride)
+    
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
@@ -225,7 +260,7 @@ def Pyr():
     canvas.draw()
         
     ax = fig.add_subplot(111, projection='3d')
-
+    
     # vertices of a pyramid
     v = np.array([[-1, -1, -1], [1, -1, -1], [1, 1, -1],  [-1, 1, -1], [0, 0, 1]])
     ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
@@ -235,7 +270,64 @@ def Pyr():
 
     # plot sides
     ax.add_collection3d(mplot3d.art3d.Poly3DCollection(verts, 
-    facecolors='cyan', linewidths=1, edgecolors='r', alpha=.25))
+    facecolors='cyan', linewidths=1, edgecolors='b', alpha=.25))
+
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.set_zlabel("Z")
+    
+    canvas.get_tk_widget().grid(column=2, row=1)
+
+def Paral():
+    lb = Label(window, text=35*" ")
+    lb.grid(column=2, row=0)
+    lb = Label(window, text="Parallelepiped")
+    lb.grid(column=2, row=0)
+
+    fig = plt.figure(figsize=(6,5), dpi=100)
+    canvas = FigureCanvasTkAgg(fig, window)
+    canvas.draw()
+    
+    ax = fig.add_subplot(111, projection='3d')
+
+    points = np.array([[-1, -1, -1],
+                  [1, -1, -1 ],
+                  [1, 1, -1],
+                  [-1, 1, -1],
+                  [-1, -1, 1],
+                  [1, -1, 1 ],
+                  [1, 1, 1],
+                  [-1, 1, 1]])
+
+    P = [[2.06498904e-01 , -6.30755443e-07 ,  1.07477548e-03],
+     [1.61535574e-06 ,  1.18897198e-01 ,  7.85307721e-06],
+     [7.08353661e-02 ,  4.48415767e-06 ,  2.05395893e-01]]
+
+    Z = np.zeros((8,3))
+    for i in range(8): Z[i,:] = np.dot(points[i,:],P)
+    Z = 10.0*Z
+
+    r = [-1,1]
+
+    X, Y = np.meshgrid(r, r)
+    # plot vertices
+    ax.scatter3D(Z[:, 0], Z[:, 1], Z[:, 2])
+
+    # list of sides' polygons of figure
+    verts = [[Z[0],Z[1],Z[2],Z[3]],
+     [Z[4],Z[5],Z[6],Z[7]], 
+     [Z[0],Z[1],Z[5],Z[4]], 
+     [Z[2],Z[3],Z[7],Z[6]], 
+     [Z[1],Z[2],Z[6],Z[5]],
+     [Z[4],Z[7],Z[3],Z[0]]]
+
+    # plot sides
+    ax.add_collection3d(mplot3d.art3d.Poly3DCollection(verts, 
+     facecolors='orange', linewidths=1, edgecolors='r', alpha=.25))
+
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
 
     canvas.get_tk_widget().grid(column=2, row=1)
 
@@ -284,19 +376,23 @@ btnOpn = Button(ToolboxGen, text="Open", width=10, command=Opn)
 btnOpn.grid(column=1, row=1, padx=3)
 ToolboxGen.grid(row=0, column=0, sticky="nsew", padx=10, pady=15)
 
+
+
 # Figure plotting buttons
 ToolboxCreat = tk.Frame(window)
 lb = Label(ToolboxCreat, text="Choose a figure:\n")
 lb.grid(column=0, row=0, padx=0, pady=0)
-btnRec = Button(ToolboxCreat, text="Rectangle", width=10, command=Rec)
-btnRec.grid(column=0, row=1, pady=3)
-btnSph = Button(ToolboxCreat, text="Sphere", width=10, command=Sph)
+btnCub = Button(ToolboxCreat, text="Rectangular prism", width=16, command=Cub)
+btnCub.grid(column=0, row=1, pady=3)
+btnSph = Button(ToolboxCreat, text="Sphere", width=16, command=Sph)
 btnSph.grid(column=0, row=2, pady=2)
-btnCyl = Button(ToolboxCreat, text="Cylinder", width=10, command=Cyl)
+btnCyl = Button(ToolboxCreat, text="Cylinder", width=16, command=Cyl)
 btnCyl.grid(column=0, row=3, pady=3)
-btnPyr = Button(ToolboxCreat, text="Pyramid", width=10, command=Pyr)
+btnPyr = Button(ToolboxCreat, text="Pyramid", width=16, command=Pyr)
 btnPyr.grid(column=0, row=4, pady=2)
-ToolboxCreat.grid(row=1, column=0, sticky="nsew", padx=40, pady=20)
+btnParal = Button(ToolboxCreat, text="Parallelepiped", width=16, command=Paral)
+btnParal.grid(column=0, row=5, pady=3)
+ToolboxCreat.grid(row=1, column=0, sticky="nsew", padx=31, pady=20)
 
 
 window.title("Rasp Snakes CAD Software VER 0.0.0")
