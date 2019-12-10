@@ -135,6 +135,9 @@ def Opn():
     # Auto scale to the mesh size
     scale = currfile.points.flatten(-1)
     axes.auto_scale_xyz(scale, scale, scale)
+
+def Save():
+    plt.savefig(name)
     
 def Cub():
     lb = Label(window, text=35*" ")
@@ -191,6 +194,11 @@ def Cub():
     ax.set_zlabel("Z")
     
     canvas.get_tk_widget().grid(column=2, row=1)
+
+    global name
+    name = 'RectPrism.png' 
+    btnSave = Button(window, text="Save", width=10, command=Save)
+    btnSave.grid(column=2, row=2, pady=5)
     
 def Sph():
     lb = Label(window, text=35*" ")
@@ -217,7 +225,11 @@ def Sph():
     ax.set_zlabel("Z")
     
     canvas.get_tk_widget().grid(column=2, row=1)
-    
+
+    global name
+    name = 'Sphere.png' 
+    btnSave = Button(window, text="Save", width=10, command=Save)
+    btnSave.grid(column=2, row=2, pady=5)
     
 def Cyl():
     lb = Label(window, text=35*" ")
@@ -249,6 +261,11 @@ def Cyl():
     
     canvas.get_tk_widget().grid(column=2, row=1)
 
+    global name
+    name = 'Cylinder.png' 
+    btnSave = Button(window, text="Save", width=10, command=Save)
+    btnSave.grid(column=2, row=2, pady=5)
+
 def Pyr():
     lb = Label(window, text=35*" ")
     lb.grid(column=2, row=0)
@@ -277,6 +294,11 @@ def Pyr():
     ax.set_zlabel("Z")
     
     canvas.get_tk_widget().grid(column=2, row=1)
+
+    global name
+    name = 'Pyramid.png' 
+    btnSave = Button(window, text="Save", width=10, command=Save)
+    btnSave.grid(column=2, row=2, pady=5)
 
 def Paral():
     lb = Label(window, text=35*" ")
@@ -330,6 +352,11 @@ def Paral():
     ax.set_zlabel('Z')
 
     canvas.get_tk_widget().grid(column=2, row=1)
+
+    global name
+    name = 'Parallelepiped.png' 
+    btnSave = Button(window, text="Save", width=10, command=Save)
+    btnSave.grid(column=2, row=2, pady=5)
 
 # Using an existing stl file:
 main_body = mesh.Mesh.from_file('RaspS.stl')
