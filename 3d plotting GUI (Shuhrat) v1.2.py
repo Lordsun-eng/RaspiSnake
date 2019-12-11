@@ -25,7 +25,7 @@ combo = Combobox(window, width=8)
  
 combo['values']= ("Sphere", "Box", "Pyramid")
  
-combo.current(1) #set the selected item
+combo.current(0) #set the selected item
  
 combo.grid(column=0, row=1)
 
