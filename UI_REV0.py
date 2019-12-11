@@ -648,7 +648,7 @@ r_cyl = 10.0 # radius of the cylinder
 h_cyl = 20.0 # height of the cylinder
 b = 10.0 # base length of the pyramid
 h_pyr = 10.0 # height of the pyramid
-s = 2 # one side of the parallelepiped
+s = 2.0 # one side of the parallelepiped
 
 # Figure plotting buttons
 PlotFrame = tk.Frame(window)
