@@ -1,5 +1,5 @@
 # Shams Torabnia & Shukhrat Khuseynov
-# GUI & 3D plotting (STL?)
+# GUI & 3D plotting & STL editor (?)
 # version 1.0.0
 
 # (3d plotting algorithms were obtained from freely shared codes [stackoverflow, github, etc.])
@@ -17,8 +17,9 @@ from mpl_toolkits import mplot3d
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 def New():
+    # cleaning the previous title
     lb = Label(window, text=35*" ")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
 
     fig = plt.figure(figsize=(6,5), dpi=100)
     canvas = FigureCanvasTkAgg(fig, window)
@@ -42,12 +43,13 @@ def New():
     ax.set_zlabel("Z")
 
     canvas = FigureCanvasTkAgg(fig, window)
-    canvas.get_tk_widget().grid(column=2, row=1)
+    canvas.get_tk_widget().grid(column=2, row=2)
 
+    # adding Save button
     global name
     name = 'StlFile.png' 
     btnSave = Button(window, text="Save", width=10, command=Save)
-    btnSave.grid(column=2, row=2, pady=5)
+    btnSave.grid(column=2, row=3, pady=5)
     
 def Opn():
 
@@ -55,17 +57,19 @@ def Opn():
     fileout =window.filename
     OPENF = mesh.Mesh.from_file(fileout)
     OPENF.save('1.stl', mode=stl.Mode.ASCII)  # save as ASCII
-    
+
+    # cleaning the previous title
     lb = Label(window, text=35*" ")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
     
     fig = plt.figure(figsize=(6,5), dpi=100)
     canvas = FigureCanvasTkAgg(fig, window)
     canvas.draw()
     ax = fig.add_subplot(111, projection='3d')
-    
+
+    # printing the according title
     lb = Label(window, text="STL file")
-    lb.grid(column=2, row=0)    
+    lb.grid(column=2, row=1)    
     
     # Loading the STL files and adding the vectors to the plot
     stl_mesh = mesh.Mesh.from_file('1.stl')
@@ -75,17 +79,19 @@ def Opn():
     scale = stl_mesh.points.flatten(-1)
     ax.auto_scale_xyz(scale, scale, scale)
 
+    # naming the axes
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
     
     canvas = FigureCanvasTkAgg(fig, window)
-    canvas.get_tk_widget().grid(column=2, row=1)
+    canvas.get_tk_widget().grid(column=2, row=2)
 
+    # adding Save button
     global name
     name = 'StlFile.png' 
     btnSave = Button(window, text="Save", width=10, command=Save)
-    btnSave.grid(column=2, row=2, pady=5)
+    btnSave.grid(column=2, row=3, pady=5)
     
     """toolbarFrame = tk.Frame(window)
     toolbarFrame.grid(row=2,column=2)
@@ -123,16 +129,18 @@ def Save():
     plt.savefig(name)
     
 def Cub():
+    # cleaning the previous title
     lb = Label(window, text=35*" ")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
 
     fig = plt.figure(figsize=(6,5), dpi=100)
     canvas = FigureCanvasTkAgg(fig, window)
     canvas.draw()
     ax = fig.add_subplot(111, projection='3d')
 
+    # printing the according title
     lb = Label(window, text="Rectangular prism")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
 
     cube_definition = [(0,0,0), (0,1,0), (2,0,0), (0,0,3)]
     
@@ -173,27 +181,30 @@ def Cub():
     # Plot the points themselves to force the scaling of the axes
     ax.scatter(points[:,0], points[:,1], points[:,2], s=0)
 
+    # naming the axes
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
     
-    canvas.get_tk_widget().grid(column=2, row=1)
+    canvas.get_tk_widget().grid(column=2, row=2)
 
+    # adding Save button
     global name
     name = 'RectPrism.png' 
     btnSave = Button(window, text="Save", width=10, command=Save)
-    btnSave.grid(column=2, row=2, pady=5)
+    btnSave.grid(column=2, row=3, pady=5)
     
 def Sph():
+    # cleaning the previous title
     lb = Label(window, text=35*" ")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
         
     fig = plt.figure(figsize=(6,5), dpi=100)            
     canvas = FigureCanvasTkAgg(fig, window)
     canvas.draw()
 
     lb = Label(window, text="Sphere")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
 
     u = np.linspace(0, 2 * np.pi, 100)
     v = np.linspace(0, np.pi, 100)
@@ -204,11 +215,12 @@ def Sph():
     ax = fig.add_subplot(111, projection='3d')
     ax.plot_surface(r*x, r*y, r*z)
 
+    # naming the axes
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
     
-    canvas.get_tk_widget().grid(column=2, row=1)
+    canvas.get_tk_widget().grid(column=2, row=2)
 
     GraphFrame = tk.Frame(window)
     btnSet = Button(GraphFrame, text="Set the parameters", width=20, command=SetSph)
@@ -217,7 +229,7 @@ def Sph():
     name = 'Sphere.png'
     btnSave = Button(GraphFrame, text="Save", width=10, command=Save)
     btnSave.grid(column=1, row=0, padx=5)
-    GraphFrame.grid(row=2, column=2, pady=5)
+    GraphFrame.grid(row=3, column=2, pady=5)
 def SetSph():
     global setp
     setp = tk.Tk()
@@ -248,15 +260,17 @@ def OkSph():
     setp.destroy()
     
 def Cyl():
+    # cleaning the previous title
     lb = Label(window, text=35*" ")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
     
     fig = plt.figure(figsize=(6,5), dpi=100)
     canvas = FigureCanvasTkAgg(fig, window)
     canvas.draw()
 
+    # printing the according title
     lb = Label(window, text="Cylinder")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
 
     r=10; h=10; a=0; nt=100; nv =50;
     theta = np.linspace(0, 2*np.pi, nt)
@@ -271,29 +285,33 @@ def Cyl():
     ax = fig.add_subplot(111, projection='3d')
     ax.plot_surface(x, y, z, alpha=0.2, rstride=rstride, cstride=cstride)
     ax.plot_surface(x, -y, z, alpha=0.2, rstride=rstride, cstride=cstride)
-    
+
+    # naming the axes   
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
     
-    canvas.get_tk_widget().grid(column=2, row=1)
+    canvas.get_tk_widget().grid(column=2, row=2)
 
+    # adding Save button
     global name
     name = 'Cylinder.png' 
     btnSave = Button(window, text="Save", width=10, command=Save)
-    btnSave.grid(column=2, row=2, pady=5)
+    btnSave.grid(column=2, row=3, pady=5)
 
 def Pyr():
+    # cleaning the previous title
     lb = Label(window, text=35*" ")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
     
     fig = plt.figure(figsize=(6,5), dpi=100)
     canvas = FigureCanvasTkAgg(fig, window)
     canvas.draw()
     ax = fig.add_subplot(111, projection='3d')
 
+    # printing the according title
     lb = Label(window, text="Pyramid")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
     
     # vertices of a pyramid
     v = np.array([[-1, -1, -1], [1, -1, -1], [1, 1, -1],  [-1, 1, -1], [0, 0, 1]])
@@ -306,28 +324,32 @@ def Pyr():
     ax.add_collection3d(mplot3d.art3d.Poly3DCollection(verts, 
     facecolors='cyan', linewidths=1, edgecolors='b', alpha=.25))
 
+    # naming the axes
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
     
-    canvas.get_tk_widget().grid(column=2, row=1)
+    canvas.get_tk_widget().grid(column=2, row=2)
 
+    # adding Save button
     global name
     name = 'Pyramid.png' 
     btnSave = Button(window, text="Save", width=10, command=Save)
-    btnSave.grid(column=2, row=2, pady=5)
+    btnSave.grid(column=2, row=3, pady=5)
 
 def Paral():
+    # cleaning the previous title
     lb = Label(window, text=35*" ")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
 
     fig = plt.figure(figsize=(6,5), dpi=100)
     canvas = FigureCanvasTkAgg(fig, window)
     canvas.draw()
     ax = fig.add_subplot(111, projection='3d')
 
+    # printing the according title
     lb = Label(window, text="Parallelepiped")
-    lb.grid(column=2, row=0)
+    lb.grid(column=2, row=1)
 
     points = np.array([[-1, -1, -1],
                   [1, -1, -1 ],
@@ -364,16 +386,18 @@ def Paral():
     ax.add_collection3d(mplot3d.art3d.Poly3DCollection(verts, 
      facecolors='orange', linewidths=1, edgecolors='r', alpha=.25))
 
+    # naming the axes
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
 
-    canvas.get_tk_widget().grid(column=2, row=1)
+    canvas.get_tk_widget().grid(column=2, row=2)
 
+    # adding Save button
     global name
     name = 'Parallelepiped.png' 
     btnSave = Button(window, text="Save", width=10, command=Save)
-    btnSave.grid(column=2, row=2, pady=5)
+    btnSave.grid(column=2, row=3, pady=5)
 
 """
 # Using an existing stl file:
@@ -410,16 +434,17 @@ print ("RaspiSnakes")
 window = tk.Tk()
 window.iconbitmap('RaspSNK.ico')
 
+lb = Label(window, text="STL editor")
+lb.grid(column=0, row=0)
 # File buttons
 FileFrame = tk.Frame(window)
-lb = Label(FileFrame, text="STL file")
-lb.grid(column=0, row=0, padx=10, pady=0)
-btnNew = Button(FileFrame, text="Empty", width=10, command=New)
-btnNew.grid(column=0, row=1, padx=2)
+btnNew = Button(FileFrame, text="New", width=10, command=New)
+btnNew.grid(column=0, row=0, padx=2)
 btnOpn = Button(FileFrame, text="Open", width=10, command=Opn)
-btnOpn.grid(column=1, row=1, padx=3)
-FileFrame.grid(row=0, column=0, sticky="nsew", padx=10, pady=5)
+btnOpn.grid(column=1, row=0, padx=3)
+FileFrame.grid(row=1, column=0, sticky="nsew", padx=10, pady=5)
 
+# default parameters
 r = 1
 
 # Figure plotting buttons
@@ -436,7 +461,7 @@ btnPyr = Button(PlotFrame, text="Pyramid", width=16, command=Pyr)
 btnPyr.grid(column=0, row=4, pady=2)
 btnParal = Button(PlotFrame, text="Parallelepiped", width=16, command=Paral)
 btnParal.grid(column=0, row=5, pady=3)
-PlotFrame.grid(row=1, column=0, sticky="nsew", padx=31, pady=25)
+PlotFrame.grid(row=2, column=0, sticky="nsew", padx=31, pady=45)
 
 
 window.title("Rasp Snakes Software VER 1.0.0")
