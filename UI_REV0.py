@@ -206,6 +206,7 @@ def Sph():
     lb = Label(window, text="Sphere")
     lb.grid(column=2, row=1)
 
+    r = 3
     u = np.linspace(0, 2 * np.pi, 100)
     v = np.linspace(0, np.pi, 100)
     x = np.outer(np.cos(u), np.sin(v))
@@ -223,6 +224,7 @@ def Sph():
     canvas.get_tk_widget().grid(column=2, row=2)
 
     global name
+<<<<<<< HEAD
     name = 'Sphere.png'
     btnSave = Button(GraphFrame, text="Save", width=10, command=Save)
     btnSave.grid(column=1, row=0, padx=5)
@@ -255,6 +257,11 @@ def OkSph():
     r = float(radius.get())
     Sph()
     setp.destroy()
+=======
+    name = 'Sphere.png' 
+    btnSave = Button(window, text="Save", width=10, command=Save)
+    btnSave.grid(column=2, row=2, pady=5)
+>>>>>>> 0b61d54c142f00a02519651c0fa67b2e05cb298a
     
 def Cyl():
     # cleaning the previous title
@@ -414,12 +421,11 @@ root = tk.Tk()
 root.overrideredirect(True)
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
-root.geometry('%dx%d+%d+%d' % (width*0.6, height*0.6, width*0.1, height*0.1))
+root.geometry('%dx%d+%d+%d' % (width*0.7, height*0.7, width*0.2, height*0.2))
 
 image = tk.PhotoImage(file="Splash.gif")
-canvas = tk.Canvas(root, height=height*0.6, width=width*0.6, bg="white")
-canvas.create_image(width*0.6/2, height*0.6/2, image=image)
-canvas.create_text(width*0.6/8, height*0.6/8, text="VER 1.0.0 ")
+canvas = tk.Canvas(root, height=height*0.8, width=width*0.8, bg="white")
+canvas.create_image(width*0.3, height*0.3, image=image)
 canvas.pack()
 
 # Showing the splash screen for 5000 milliseconds then destroying
@@ -441,9 +447,12 @@ btnOpn = Button(FileFrame, text="Open", width=10, command=Opn)
 btnOpn.grid(column=1, row=0, padx=3)
 FileFrame.grid(row=1, column=0, sticky="nsew", padx=10, pady=5)
 
+<<<<<<< HEAD
 # default parameters
 r = 1
 
+=======
+>>>>>>> 0b61d54c142f00a02519651c0fa67b2e05cb298a
 # Figure plotting buttons
 PlotFrame = tk.Frame(window)
 lb = Label(PlotFrame, text="Choose a figure:\n")
@@ -461,7 +470,7 @@ btnParal.grid(column=0, row=5, pady=3)
 PlotFrame.grid(row=2, column=0, sticky="nsew", padx=31, pady=45)
 
 
-window.title("Rasp Snakes Software VER 1.0.0")
+window.title("Rasp Snakes Software VER 0.0.0")
  
 window.geometry('800x600')
 
