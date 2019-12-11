@@ -222,9 +222,6 @@ def Sph():
     
     canvas.get_tk_widget().grid(column=2, row=2)
 
-    GraphFrame = tk.Frame(window)
-    btnSet = Button(GraphFrame, text="Set the parameters", width=20, command=SetSph)
-    btnSet.grid(column=0, row=0, padx=5)
     global name
     name = 'Sphere.png'
     btnSave = Button(GraphFrame, text="Save", width=10, command=Save)
