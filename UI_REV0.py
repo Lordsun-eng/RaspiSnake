@@ -46,14 +46,19 @@ def New():
     canvas = FigureCanvasTkAgg(fig, window)
     canvas.get_tk_widget().grid(column=2, row=2)
 
-    # adding Save button
+    # set parameters button & save button
+    GraphFrame = tk.Frame(window)
+    btnSet = Button(GraphFrame, text="Set the parameters", width=20, command=SetNew)
+    btnSet.grid(column=0, row=0, padx=5)
     global name
     name = 'StlFile.png' 
-    btnSave = Button(window, text="Save", width=10, command=Save)
-    btnSave.grid(column=2, row=3, pady=5)
+    btnSave = Button(GraphFrame, text="Save", width=10, command=Save)
+    btnSave.grid(column=1, row=0, padx=5)
+    GraphFrame.grid(row=3, column=2, pady=5)
+def SetNew():
+    tk.messagebox.showinfo("Set the parameters", "This feature is not defined for the STL editor.")
     
 def Opn():
-
     window.filename =  tk.filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.stl"),("all files","*.*")))
     fileout =window.filename
     OPENF = mesh.Mesh.from_file(fileout)
@@ -88,11 +93,17 @@ def Opn():
     canvas = FigureCanvasTkAgg(fig, window)
     canvas.get_tk_widget().grid(column=2, row=2)
 
-    # adding Save button
+    # set parameters button & save button
+    GraphFrame = tk.Frame(window)
+    btnSet = Button(GraphFrame, text="Set the parameters", width=20, command=SetOpn)
+    btnSet.grid(column=0, row=0, padx=5)
     global name
     name = 'StlFile.png' 
-    btnSave = Button(window, text="Save", width=10, command=Save)
-    btnSave.grid(column=2, row=3, pady=5)
+    btnSave = Button(GraphFrame, text="Save", width=10, command=Save)
+    btnSave.grid(column=1, row=0, padx=5)
+    GraphFrame.grid(row=3, column=2, pady=5)
+def SetOpn():
+    tk.messagebox.showinfo("Set the parameters", "This feature is not defined for the STL editor.")
     
     """toolbarFrame = tk.Frame(window)
     toolbarFrame.grid(row=2,column=2)
@@ -654,7 +665,6 @@ btnPyr.grid(column=0, row=4, pady=2)
 btnParal = Button(PlotFrame, text="Parallelepiped", width=16, command=Paral)
 btnParal.grid(column=0, row=5, pady=3)
 PlotFrame.grid(row=2, column=0, sticky="nsew", padx=31, pady=45)
-
 
 window.title("Rasp Snakes Software VER 1.0.0")
  
