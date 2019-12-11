@@ -362,12 +362,11 @@ root = tk.Tk()
 root.overrideredirect(True)
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
-root.geometry('%dx%d+%d+%d' % (width*0.6, height*0.6, width*0.1, height*0.1))
+root.geometry('%dx%d+%d+%d' % (width*0.7, height*0.7, width*0.2, height*0.2))
 
 image = tk.PhotoImage(file="Splash.gif")
-canvas = tk.Canvas(root, height=height*0.6, width=width*0.6, bg="white")
-canvas.create_image(width*0.6/2, height*0.6/2, image=image)
-canvas.create_text(width*0.6/8, height*0.6/8, text="VER 1.0.0 ")
+canvas = tk.Canvas(root, height=height*0.8, width=width*0.8, bg="white")
+canvas.create_image(width*0.3, height*0.3, image=image)
 canvas.pack()
 
 # Showing the splash screen for 5000 milliseconds then destroying
