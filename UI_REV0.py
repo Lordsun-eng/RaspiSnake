@@ -207,7 +207,6 @@ def Sph():
     lb = Label(window, text="Sphere")
     lb.grid(column=2, row=1)
 
-    r = 3
     u = np.linspace(0, 2 * np.pi, 100)
     v = np.linspace(0, np.pi, 100)
     x = np.outer(np.cos(u), np.sin(v))
