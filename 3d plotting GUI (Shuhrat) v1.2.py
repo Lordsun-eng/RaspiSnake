@@ -40,7 +40,6 @@ def choose():
         lb3 = Label(window, text="Radius")
         lb3.grid(column=0, row=5)
 
-        v = StringVar()
         global radius
         radius = Entry(window,width=5) 
         radius.grid(column=0, row=6)
