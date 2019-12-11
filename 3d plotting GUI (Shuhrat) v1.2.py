@@ -1,6 +1,6 @@
 # Shukhrat Khuseynov
 # GUI plotting
-# version 1.1
+# version 1.2
 
 from tkinter import *
 from tkinter.ttk import *
@@ -40,8 +40,11 @@ def choose():
         lb3 = Label(window, text="Radius")
         lb3.grid(column=0, row=5)
 
+        v = StringVar()
+        global radius
         radius = Entry(window,width=5) 
         radius.grid(column=0, row=6)
+        radius.insert(0, "1")
         radius.focus()
         
         lb = Label(window, text="")
@@ -96,8 +99,6 @@ def choose():
 lb = Label(window, text="")
 lb.grid(column=0, row=2)
 
-#radius = Entry()
-
 btn = Button(window, text="Choose", width=8, command=choose)
 btn.grid(column=0, row=3)
 
@@ -106,8 +107,9 @@ def plot():
 
     if combo.get() == "Sphere":
 
-        #r = float(radius.get())
-        r = 1
+        global radius      
+        #r = 1
+        r = float(radius.get())
         
         fig = plt.figure()
         plot = Tk()
