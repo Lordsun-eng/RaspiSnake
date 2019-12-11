@@ -195,7 +195,6 @@ def Sph():
     lb = Label(window, text="Sphere")
     lb.grid(column=2, row=0)
 
-    r = 3
     u = np.linspace(0, 2 * np.pi, 100)
     v = np.linspace(0, np.pi, 100)
     x = np.outer(np.cos(u), np.sin(v))
@@ -211,10 +210,42 @@ def Sph():
     
     canvas.get_tk_widget().grid(column=2, row=1)
 
+    GraphFrame = tk.Frame(window)
+    btnSet = Button(GraphFrame, text="Set the parameters", width=20, command=SetSph)
+    btnSet.grid(column=0, row=0, padx=5)
     global name
-    name = 'Sphere.png' 
-    btnSave = Button(window, text="Save", width=10, command=Save)
-    btnSave.grid(column=2, row=2, pady=5)
+    name = 'Sphere.png'
+    btnSave = Button(GraphFrame, text="Save", width=10, command=Save)
+    btnSave.grid(column=1, row=0, padx=5)
+    GraphFrame.grid(row=2, column=2, pady=5)
+def SetSph():
+    global setp
+    setp = tk.Tk()
+    setp.title("Set the Sphere")
+
+    lb = Label(setp, text="The figure is Sphere.\nEnter its parameter(s):")
+    lb.grid(column=0, row=0, pady=10, padx=15)
+
+    fr = tk.Frame(setp)
+    fr.grid(row=1, column=0, pady=20) 
+    lb1 = Label(fr, text="Radius")
+    lb1.grid(column=0, row=0, padx=7)
+    
+    global radius
+    radius = Entry(fr,width=5) 
+    radius.grid(column=1, row=0, padx=8)
+    radius.insert(0, str(r))
+    radius.focus()
+
+    btnOk = Button(fr, text="OK", width=4, command=OkSph)
+    btnOk.grid(column=1, row=1, padx=8, pady=15)
+
+    setp.geometry('150x150')
+def OkSph():
+    global r, setp
+    r = float(radius.get())
+    Sph()
+    setp.destroy()
     
 def Cyl():
     lb = Label(window, text=35*" ")
@@ -387,6 +418,8 @@ btnNew.grid(column=0, row=1, padx=2)
 btnOpn = Button(FileFrame, text="Open", width=10, command=Opn)
 btnOpn.grid(column=1, row=1, padx=3)
 FileFrame.grid(row=0, column=0, sticky="nsew", padx=10, pady=5)
+
+r = 1
 
 # Figure plotting buttons
 PlotFrame = tk.Frame(window)
