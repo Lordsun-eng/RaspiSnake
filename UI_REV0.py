@@ -632,7 +632,7 @@ lb = Label(window, text="STL editor")
 lb.grid(column=0, row=0)
 # File buttons
  
-FileFrame = tk.Frame(window,relief)
+FileFrame = tk.Frame(window)
 lb = Label(FileFrame, text="STL file")
 lb.grid(column=0, row=0, padx=10, pady=0)
 btnNew = Button(FileFrame, text="Empty", width=10, command=New)
