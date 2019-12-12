@@ -379,7 +379,7 @@ window = tk.Tk()
 window.iconbitmap('RaspSNK.ico')
 
 # File buttons
-FileFrame = tk.Frame(window)
+FileFrame = tk.Frame(window,relief)
 lb = Label(FileFrame, text="STL file")
 lb.grid(column=0, row=0, padx=10, pady=0)
 btnNew = Button(FileFrame, text="Empty", width=10, command=New)
