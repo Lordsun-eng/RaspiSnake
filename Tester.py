@@ -85,13 +85,15 @@ class MainWin(object):
 
         def plot(self):
             # the actual plot
-            
-            
 
+             
+            # to be able to rotate you have to draw an empty canvas first before plotting a figure!
             fig = plt.figure()
+            canvas = FigureCanvasTkAgg(fig, self.parent1)
+            canvas.draw()
+            
             ax = mplot3d.Axes3D(fig)
             ax.add_collection3d(mplot3d.art3d.Poly3DCollection(main_body.vectors))
-            canvas = FigureCanvasTkAgg(fig, self.parent1)
             canvas.mpl_connect('button_press_event', self.onclick)
             scale = main_body.points.flatten('F')
             ax.auto_scale_xyz(scale, scale, scale)
@@ -247,10 +249,6 @@ def Opn():
     combined = mesh.Mesh(np.concatenate([main_body.data, OPENF.data]))
 
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
-    
-    
-
-
 
 def Save():
     plt.savefig(name)
