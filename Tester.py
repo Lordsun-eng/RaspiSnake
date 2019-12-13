@@ -311,14 +311,17 @@ def Cub():
     zc.grid(row=5, column=1)
     Cuframe.grid(row=0, column=0)
     def Cubcal():
-        Hc=float(hc.get())
-        Wc=float(wc.get())
-        Lc=float(lc.get())
-        Xc=float(xc.get())
-        Yc=float(yc.get())
-        Zc=float(zc.get())
-        Nod=np.zeros((8,3))
-        print(Hc,Wc,Lc)
+        XYZ=[float(hc.get()), float(wc.get()), float(lc.get())]
+        HWL=[float(xc.get()),float(yc.get()),float(zc.get())]
+        Nod=np.array([\
+        [XYZ(1)-HWL(1), XYZ(1)-HWL(1),XYZ(1)-HWL(1)],
+        [XYZ(1)+1, XYZ(1)-1, XYZ(1)-1],
+        [XYZ(1)+1, XYZ(1)+1, XYZ(1)-1],
+        [XYZ(1)-1, XYZ(1)+1, XYZ(1)-1],
+        [XYZ(1)-1, XYZ(1)-1, XYZ(1)+1],
+        [XYZ(1)+1, XYZ(1)-1, XYZ(1)+1],
+        [XYZ(1)+1, XYZ(1)+1, XYZ(1)+1],
+        [XYZ(1)-1, XYZ(1)+1, XYZ(1)+1]])
         
         
     
