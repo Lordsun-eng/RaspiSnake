@@ -286,11 +286,22 @@ def Cub():
     tk.Label(Cuframe, text="Y").grid(row=4)
     tk.Label(Cuframe, text="Z").grid(row=5)
     hc = tk.Entry(Cuframe)
+    hc.insert(tk.END, "1")
+    
     wc = tk.Entry(Cuframe)
+    wc.insert(tk.END, "1")
+
     lc = tk.Entry(Cuframe)
+    lc.insert(tk.END, "1")
+
     xc = tk.Entry(Cuframe)
+    xc.insert(tk.END, "0")
+
     yc = tk.Entry(Cuframe)
+    yc.insert(tk.END, "0")
+
     zc = tk.Entry(Cuframe)
+    zc.insert(tk.END, "0")
 
     hc.grid(row=0, column=1)
     wc.grid(row=1, column=1)
@@ -300,13 +311,14 @@ def Cub():
     zc.grid(row=5, column=1)
     Cuframe.grid(row=0, column=0)
     def Cubcal():
-        hc=float(hc.get())
-        wc=float(wc.get())
-        lc=float(lc.get())
-        xc=float(xc.get())
-        yc=float(yc.get())
-        zc=float(zc.get())
+        Hc=float(hc.get())
+        Wc=float(wc.get())
+        Lc=float(lc.get())
+        Xc=float(xc.get())
+        Yc=float(yc.get())
+        Zc=float(zc.get())
         Nod=np.zeros((8,3))
+        print(Hc,Wc,Lc)
         
         
     
