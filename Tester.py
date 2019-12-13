@@ -89,13 +89,15 @@ class MainWin(object):
 
         def plot(self):
             # the actual plot
-            
-            
 
+             
+            # to be able to rotate you have to draw an empty canvas first before plotting a figure!
             fig = plt.figure()
+            canvas = FigureCanvasTkAgg(fig, self.parent1)
+            canvas.draw()
+            
             ax = mplot3d.Axes3D(fig)
             ax.add_collection3d(mplot3d.art3d.Poly3DCollection(main_body.vectors))
-            canvas = FigureCanvasTkAgg(fig, self.parent1)
             canvas.mpl_connect('button_press_event', self.onclick)
             scale = main_body.points.flatten('F')
             ax.auto_scale_xyz(scale, scale, scale)
@@ -256,6 +258,9 @@ def Opn():
 
 def Ext():
     exit()
+
+    #re-running the plot fn. here might help to update the plot (it worked in the matplotlib implementation)
+    #another reason might be that RaspS.stl isn't updating directly
 
 def Save():
     plt.savefig(name)
