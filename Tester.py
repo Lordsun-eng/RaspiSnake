@@ -1,6 +1,8 @@
 import stl
 import math
 import numpy as np
+import os
+import sys
 from stl import mesh
 
 import tkinter as tk
@@ -13,6 +15,8 @@ from mpl_toolkits import mplot3d
 global imgNew, imgOpn,imgExt, imgCub,imgSph,imgPyr
 
 class MainWin(object):
+    main_body = mesh.Mesh.from_file('RaspS.stl')
+
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("RS Design VER 0.00")
@@ -92,7 +96,7 @@ class MainWin(object):
 
              
             # to be able to rotate you have to draw an empty canvas first before plotting a figure!
-            fig = plt.figure()
+            fig = plt.Figure()
             canvas = FigureCanvasTkAgg(fig, self.parent1)
             canvas.draw()
             
@@ -224,15 +228,18 @@ def New():
     lb = Label(program.window, text=35*" ")
     lb.grid(column=2, row=0)
 
-    fig = plt.figure(figsize=(6,5), dpi=100)
-    canvas = FigureCanvasTkAgg(fig, program.window)
-    canvas.draw()
-    ax = fig.add_subplot(111, projection='3d')
+#    fig = plt.figure(figsize=(6,5), dpi=100)
+#    canvas = FigureCanvasTkAgg(fig, program.window)
+#    canvas.draw()
+#    ax = fig.add_subplot(111, projection='3d')
     
     data = np.zeros(100, dtype=mesh.Mesh.dtype)
     New = mesh.Mesh(data, remove_empty_areas=False)
     New.save('RaspS.stl', mode=stl.Mode.ASCII)
     main_body = mesh.Mesh.from_file('RaspS.stl')
+    #os.execl(sys.executable, sys.executable, *sys.argv)
+    program.window.update()
+    program.window.update_idletasks()
         
 def Opn():
 
@@ -253,11 +260,15 @@ def Opn():
     combined = mesh.Mesh(np.concatenate([main_body.data, OPENF.data]))
 
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
-    
-    program.window.mainloop()
+    main_body = mesh.Mesh.from_file('RaspS.stl')
+    canvas.draw()
+    #os.execl(sys.executable, sys.executable, *sys.argv)
+    program.window.update()
+    program.window.update_idletasks()
+
 
 def Ext():
-    exit()
+    quit()
 
     #re-running the plot fn. here might help to update the plot (it worked in the matplotlib implementation)
     #another reason might be that RaspS.stl isn't updating directly
@@ -343,7 +354,7 @@ canvas.create_image(width*0.3, height*0.3, image=image)
 canvas.pack()
 
 # Showing the splash screen for 5000 milliseconds then destroying
-root.after(5000, root.destroy)
+root.after(1, root.destroy)
 root.mainloop()
 print ("RaspiSnakes")
 
@@ -351,5 +362,5 @@ print ("RaspiSnakes")
 program = MainWin()
 
 # Start the GUI event loop
-program.window.mainloop()
+program.window.update()
 
