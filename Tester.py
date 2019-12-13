@@ -250,6 +250,9 @@ def Opn():
 
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
 
+    #re-running the plot fn. here might help to update the plot (it worked in the matplotlib implementation)
+    #another reason might be that RaspS.stl isn't updating directly
+
 def Save():
     plt.savefig(name)
     
