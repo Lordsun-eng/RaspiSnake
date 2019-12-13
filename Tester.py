@@ -10,7 +10,7 @@ from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
-global imgNew, imgOpn, imgCub,imgSph,imgPyr
+global imgNew, imgOpn,imgExt, imgCub,imgSph,imgPyr
 
 class MainWin(object):
     def __init__(self):
@@ -49,6 +49,10 @@ class MainWin(object):
         btnOpn = tk.Button(FileFrame, image = imgOpn, width=20, height=20, command=Opn)
         btnOpn.image = imgOpn
         btnOpn.grid(column=0, row=1, padx=3)
+        imgExt = tk.PhotoImage(file="ext.png")
+        btnExt = tk.Button(FileFrame, image = imgExt, width=20, height=20, command=Ext)
+        btnExt.image = imgExt
+        btnExt.grid(column=0, row=2, padx=3)
         FileFrame.grid(row=0, column=0, sticky="nsew", padx=10)
         
         # Create buttons
@@ -248,9 +252,10 @@ def Opn():
 
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
     
-    
+    program.window.mainloop()
 
-
+def Ext():
+    exit()
 
 def Save():
     plt.savefig(name)
@@ -285,7 +290,10 @@ def Cub():
         xc=float(xc.get())
         yc=float(yc.get())
         zc=float(zc.get())
-
+        Nod=np.zeros((8,3))
+        
+        
+    
     btnOK = tk.Button(Cubimp, text = "OK" , width=15, height=3,command=Cubcal)
 
         
@@ -330,7 +338,7 @@ canvas.create_image(width*0.3, height*0.3, image=image)
 canvas.pack()
 
 # Showing the splash screen for 5000 milliseconds then destroying
-root.after(1, root.destroy)
+root.after(5000, root.destroy)
 root.mainloop()
 print ("RaspiSnakes")
 
