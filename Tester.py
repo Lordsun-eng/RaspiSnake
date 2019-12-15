@@ -240,6 +240,7 @@ def New():
     #os.execl(sys.executable, sys.executable, *sys.argv)
     program.window.update()
     program.window.update_idletasks()
+    MainWin.PlotFrame.plot(program)
         
 def Opn():
 
@@ -377,5 +378,5 @@ print ("RaspiSnakes")
 program = MainWin()
 
 # Start the GUI event loop
-program.window.update()
+program.window.mainloop()
 
