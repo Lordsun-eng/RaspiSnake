@@ -8,8 +8,7 @@ from stl import mesh
 import tkinter as tk
 from tkinter.ttk import *
 
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg, NavigationToolbar2Tk)
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 global imgNew, imgOpn,imgExt, imgCub,imgSph,imgPyr
@@ -28,7 +27,6 @@ class MainWin(object):
         self.window['padx'] = 10
         self.window['pady'] = 10
 
-        # - - - - - - - - - - - - - - - - - - - - -
         # Frame
         frame1 = Frame(self.window, relief=tk.RIDGE)
         frame1.grid(row=0, column=1, sticky=tk.E + tk.W + tk.N + tk.S, padx=0, pady=0)
@@ -92,11 +90,10 @@ class MainWin(object):
             self.plot_toolbar(canvas)
 
         def plot(self):
-            # the actual plot
+            # The actual plot
 
-             
-            # to be able to rotate you have to draw an empty canvas first before plotting a figure!
             fig = plt.Figure()
+            # To be able to rotate we have to draw an empty canvas first before plotting a figure
             canvas = FigureCanvasTkAgg(fig, self.parent1)
             canvas.draw()
             
@@ -110,22 +107,21 @@ class MainWin(object):
             return canvas
 
         def plot_toolbar(self, canvas):
-            # the tool bar to the plot
+            # The tool bar to the plot
             toolbar = NavigationToolbar2Tk(canvas, self.parent2)
             toolbar.update()
             canvas.get_tk_widget().grid(row=1, column=1)
             canvas.draw()
 
         def onclick(self, event):
-            # Here I am now setting the position
+            # Setting the position
             self.set_new_position(event.x, event.y)
 
         def set_new_position(self, x, y):
             self.x = x
             self.y = y
             for callback in self.observers:
-                # Here I am now calling the methods that have been captured so far
-                # and passing them the arguments of x, y to do with as they please
+                # Calling the methods that have been captured so far and passing them the arguments of x, y to do with as they please
                 callback(self.x, self.y)
 
         def bind_to(self, callback):
@@ -143,8 +139,7 @@ class MainWin(object):
         def update_position(self, x, y):
             self.x = x
             self.y = y
-            # Here I have added the requirement to run the display code again
-            # after an update
+            # Adding the requirement to run the display code again after an update
             self.display()
 
         def display(self):
@@ -153,21 +148,23 @@ class MainWin(object):
             l_x.grid(row = 0,  column=0)
             l_y.grid(row = 0,  column=1)
 
-__saved_context__ = {}
+# For now this part doesn't seem to have any effect on the program:
 
-def saveContext():
-    import sys
-    __saved_context__.update(sys.modules[__name__].__dict__)
+#__saved_context__ = {}
 
-def restoreContext():
-    import sys
-    names = sys.modules[__name__].__dict__.keys()
-    for n in list(names):
-        if n not in __saved_context__:
-            del sys.modules[__name__].__dict__[n]
-clear = restoreContext
-saveContext()
-clear()
+#def saveContext():
+    #import sys
+    #__saved_context__.update(sys.modules[__name__].__dict__)
+
+#def restoreContext():
+    #import sys
+    #names = sys.modules[__name__].__dict__.keys()
+    #for n in list(names):
+        #if n not in __saved_context__:
+            #del sys.modules[__name__].__dict__[n]
+#clear = restoreContext
+#saveContext()
+#clear()
 
 def find_mins_maxs(obj):
     minx = maxx = miny = maxy = minz = maxz = None
@@ -210,12 +207,11 @@ def copy_obj(obj, dims, num_rows, num_cols, num_layers):
     for layer in range(num_layers):
         for row in range(num_rows):
             for col in range(num_cols):
-                # skip the position where original being copied is
+                # Skipping the position where original being copied is
                 if row == 0 and col == 0 and layer == 0:
                     continue
                 _copy = mesh.Mesh(obj.data.copy())
-                # pad the space between objects by 10% of the dimension being
-                # translated
+                # Padding the space between objects by 10% of the dimension being translated
                 if col != 0:
                     translate(_copy, w, w / 10., col, 'x')
                 if row != 0:
@@ -225,8 +221,8 @@ def copy_obj(obj, dims, num_rows, num_cols, num_layers):
                 copies.append(_copy)
     return copies
 def New():
-    lb = Label(program.window, text=35*" ")
-    lb.grid(column=2, row=0)
+#    lb = Label(program.window, text=35*" ")
+#    lb.grid(column=2, row=0)
 
 #    fig = plt.figure(figsize=(6,5), dpi=100)
 #    canvas = FigureCanvasTkAgg(fig, program.window)
@@ -237,10 +233,10 @@ def New():
     New = mesh.Mesh(data, remove_empty_areas=False)
     New.save('RaspS.stl', mode=stl.Mode.ASCII)
     main_body = mesh.Mesh.from_file('RaspS.stl')
-    #os.execl(sys.executable, sys.executable, *sys.argv)
-    program.window.update()
-    program.window.update_idletasks()
-    MainWin.PlotFrame.plot(program)
+    
+    os.execl(sys.executable, sys.executable, *sys.argv)
+    #program.window.update_idletasks()
+    #program.window.update()
         
 def Opn():
 
@@ -262,17 +258,14 @@ def Opn():
 
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
     main_body = mesh.Mesh.from_file('RaspS.stl')
-    canvas.draw()
-    #os.execl(sys.executable, sys.executable, *sys.argv)
-    program.window.update()
-    program.window.update_idletasks()
 
+    os.execl(sys.executable, sys.executable, *sys.argv)
+    #program.window.update()
+    #program.window.update_idletasks()
 
 def Ext():
     quit()
 
-    #re-running the plot fn. here might help to update the plot (it worked in the matplotlib implementation)
-    #another reason might be that RaspS.stl isn't updating directly
 
 def Save():
     plt.savefig(name)
@@ -340,22 +333,16 @@ def Con():
     pass
 
 
-
-
-
-# Using an existing stl file:
+# Using an existing stl file
 main_body = mesh.Mesh.from_file('RaspS.stl')
 
-
-# find the max dimensions, so we can know the bounding box, getting the height, width, length (because these are the step size)...
+# Finding the max dimensions & getting the height, width, length
 minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(main_body)
 w1 = maxx - minx
 l1 = maxy - miny
 h1 = maxz - minz
 
-
-
-# Splash screen (creating a splash screen, 80% of display screen size, centered, displaying a GIF image with needed info, disappearing after 5 seconds)
+# Creating the splash screen
 root = tk.Tk()
 
 # Showing no frame
@@ -369,14 +356,14 @@ canvas = tk.Canvas(root, height=height*0.8, width=width*0.8, bg="white")
 canvas.create_image(width*0.3, height*0.3, image=image)
 canvas.pack()
 
-# Showing the splash screen for 5000 milliseconds then destroying
+# Showing the splash screen for 5000 milliseconds, then destroying
 root.after(1, root.destroy)
 root.mainloop()
 print ("RaspiSnakes")
 
-# Create the entire GUI program
+# Creating the entire GUI program
 program = MainWin()
 
-# Start the GUI event loop
+# Starting the GUI event loop
 program.window.mainloop()
 
