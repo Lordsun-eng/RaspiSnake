@@ -61,7 +61,7 @@ class MainWin(object):
         btnExt.grid(column=0, row=3, padx=3)
         FileFrame.grid(row=0, column=0, sticky="nsew", padx=10)
         
-        # Create buttons
+        # Figure creation buttons
         CrtFrame = tk.Frame(self.window)
         lb = Label(CrtFrame)
         lb.grid(column=0, row=0)
