@@ -83,7 +83,17 @@ w1 = maxx - minx
 l1 = maxy - miny
 h1 = maxz - minz
 def New():
-    pass
+    data = np.zeros(100, dtype=mesh.Mesh.dtype)
+    New = mesh.Mesh(data, remove_empty_areas=False)
+    New.save('RaspS.stl', mode=stl.Mode.ASCII)
+    loc_main_body = mesh.Mesh.from_file('RaspS.stl')
+    ax.add_collection3d(mplot3d.art3d.Poly3DCollection(loc_main_body.vectors))
+    scale = loc_main_body.points.flatten('F')
+    ax.auto_scale_xyz(scale, scale, scale)
+
+    canvas.get_tk_widget().grid(row=0, column=1)
+    canvas.draw()
+    
 def Opn():
     window.filename =  tk.filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = [("STL files","*.stl")])
     fileout =window.filename
@@ -98,24 +108,136 @@ def Opn():
     translate(OPENF, w1, w1 / 10., 3, 'x')
     combined = mesh.Mesh(np.concatenate([main_body.data, OPENF.data]))
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
-    main_body = mesh.Mesh.from_file('RaspS.stl')
-    canvas = FigureCanvasTkAgg(fig, window)
-    ax = mplot3d.Axes3D(fig)
-    ax.add_collection3d(mplot3d.art3d.Poly3DCollection(main_body.vectors))
-    scale = main_body.points.flatten('F')
+    loc_main_body = mesh.Mesh.from_file('RaspS.stl')
+
+    ax.add_collection3d(mplot3d.art3d.Poly3DCollection(loc_main_body.vectors))
+    scale = loc_main_body.points.flatten('F')
     ax.auto_scale_xyz(scale, scale, scale)
 
-    canvas.get_tk_widget().grid(row=1, column=1)
+    canvas.get_tk_widget().grid(row=0, column=1)
     canvas.draw()
     
 def Save():
-    plt.savefig(name)
+    pass
+
+def Ext():
+    quit()
     
 def Cub():
-    pass
+    def Cubcal():
+        HWL=[float(hc.get()), float(wc.get()), float(lc.get())]
+        XYZ=[float(xc.get()),float(yc.get()),float(zc.get())]
+        
+        Nod=np.array([\
+        [XYZ[0]-HWL[0]/2, XYZ[1]-HWL[1]/2, XYZ[2]-HWL[2]/2],
+        [XYZ[0]+HWL[0]/2, XYZ[1]-HWL[1]/2, XYZ[2]-HWL[2]/2],
+        [XYZ[0]+HWL[0]/2, XYZ[1]+HWL[1]/2, XYZ[2]-HWL[2]/2],
+        [XYZ[0]-HWL[0]/2, XYZ[1]+HWL[1]/2, XYZ[2]-HWL[2]/2],
+        [XYZ[0]-HWL[0]/2, XYZ[1]-HWL[1]/2, XYZ[2]+HWL[2]/2],
+        [XYZ[0]+HWL[0]/2, XYZ[1]-HWL[1]/2, XYZ[2]+HWL[2]/2],
+        [XYZ[0]+HWL[0]/2, XYZ[1]+HWL[1]/2, XYZ[2]+HWL[2]/2],
+        [XYZ[0]-HWL[0]/2, XYZ[1]+HWL[1]/2, XYZ[2]+HWL[2]/2]])
+
+        faces = np.array([\
+            [0,3,1],
+            [1,3,2],
+            [0,4,7],
+            [0,7,3],
+            [4,5,6],
+            [4,6,7],
+            [5,1,2],
+            [5,2,6],
+            [2,3,6],
+            [3,7,6],
+            [0,1,5],
+            [0,5,4]])
+        
+        # Create the mesh
+        cube = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
+        for i, f in enumerate(faces):
+            for j in range(3):
+                cube.vectors[i][j] = Nod[f[j],:]
+        openf = copy_obj(cube, (w1, l1, h1), 1, 1, 1)
+    
+        minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(cube)
+        w2 = maxx - minx
+        l2 = maxy - miny
+        h2 = maxz - minz
+        translate(cube, w1, w1 / 10., 3, 'x')
+        main_body = mesh.Mesh.from_file('RaspS.stl')
+        combined = mesh.Mesh(np.concatenate([main_body.data, cube.data]))
+        combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
+        loc_main_body = mesh.Mesh.from_file('RaspS.stl')
+
+        ax.add_collection3d(mplot3d.art3d.Poly3DCollection(loc_main_body.vectors))
+        scale = loc_main_body.points.flatten('C')
+        ax.auto_scale_xyz(scale, scale, scale)
+
+        canvas.get_tk_widget().grid(row=0, column=1)
+        canvas.draw()
+        main_body=loc_main_body
+        Cubimp.grab_release()
+        Cubimp.destroy()
+        
+    def CubCLC():
+        Cubimp.grab_release()
+        Cubimp.destroy()
+    
+    Cubimp=tk.Toplevel()
+    Cubimp.grab_set()
+    Cubimp.overrideredirect(True)
+    
+    Cuframe=tk.Frame(Cubimp)
+    tk.Label(Cuframe, text="Height").grid(row=0)
+    tk.Label(Cuframe, text="Width").grid(row=1)
+    tk.Label(Cuframe, text="Length").grid(row=2)
+    tk.Label(Cuframe, text="X").grid(row=3)
+    tk.Label(Cuframe, text="Y").grid(row=4)
+    tk.Label(Cuframe, text="Z").grid(row=5)
+    hc = tk.Entry(Cuframe)
+    hc.insert(tk.END, "1")
+    
+    wc = tk.Entry(Cuframe)
+    wc.insert(tk.END, "1")
+
+    lc = tk.Entry(Cuframe)
+    lc.insert(tk.END, "1")
+
+    xc = tk.Entry(Cuframe)
+    xc.insert(tk.END, "0")
+
+    yc = tk.Entry(Cuframe)
+    yc.insert(tk.END, "0")
+
+    zc = tk.Entry(Cuframe)
+    zc.insert(tk.END, "0")
+
+    hc.grid(row=0, column=1)
+    wc.grid(row=1, column=1)
+    lc.grid(row=2, column=1)
+    xc.grid(row=3, column=1)
+    yc.grid(row=4, column=1)
+    zc.grid(row=5, column=1)
+    Cuframe.grid(row=0, column=0)
+            
+    CFrame=tk.Frame(Cubimp)
+    btnOK = tk.Button(CFrame, text = "OK" , width=10, height=1,command=Cubcal)
+    btnCLC= tk.Button(CFrame, text = "Cancel" , width=10, height=1,command=CubCLC)
+    btnOK.grid(column=0, row=1)
+    btnCLC.grid(column=1, row=1)
+    CFrame.grid(column=0, row=1)
+    
+    
+        
+    
+
+
+    
 def Sph():
-    pass
-def Cyl():
+    Rad=10
+    
+    
+def Con():
     pass
 
 
@@ -131,7 +253,7 @@ root.geometry('%dx%d+%d+%d' % (width*0.6, height*0.6, width*0.1, height*0.1))
 image = tk.PhotoImage(file="Splash.gif")
 canvas = tk.Canvas(root, height=height*0.6, width=width*0.6, bg="white")
 canvas.create_image(width*0.6/2, height*0.6/2, image=image)
-canvas.create_text(width*0.6/8, height*0.6/8, text="VER 0.00 ")
+
 
 # Showing the splash screen for 5000 milliseconds then destroying
 root.after(1, root.destroy)
@@ -145,19 +267,7 @@ window['pady'] = 10
 window.iconbitmap('RaspSNK.ico')
 
 # - - - - - - - - - - - - - - - - - - - - -
-# Frame
-frame1 = Frame(window, relief=tk.RIDGE)
-frame1.grid(row=0, column=1, sticky=tk.E + tk.W + tk.N + tk.S, padx=0, pady=0)
-
-frame2 = Frame(window, relief=tk.RIDGE)
-frame2.grid(row=1, column=1, sticky=tk.E + tk.W + tk.N + tk.S, padx=0, pady=0)
-plotFrame = PlotFrame(frame1, frame2)
-
-frame3 = Frame(window, relief=tk.RIDGE)
-frame3.grid(row=2, column=1, sticky=tk.E + tk.W + tk.N + tk.S, padx=0, pady=0)
-
-self.workFrame = WorkFrame(frame3, self.plotFrame)
-# File buttons
+# File toolbox
 FileFrame = tk.Frame(window)
 lb = Label(FileFrame)
 lb.grid(column=0, row=0, padx=10, pady=0)
@@ -175,7 +285,7 @@ btnExt.image = imgExt
 btnExt.grid(column=0, row=2, padx=3)
 FileFrame.grid(row=0, column=0, sticky="nsew", padx=10)
         
-# Create buttons
+# Create toolbox
 CrtFrame = tk.Frame(window)
 lb = Label(CrtFrame)
 lb.grid(column=0, row=0)
@@ -195,22 +305,23 @@ btnCon.grid(column=0, row=3)
 
 CrtFrame.grid(row=0, column=2, sticky="nsew", padx=10)
 
-window.title("Rasp Snakes Software VER 0.00")
+
+window.title("Rasp Snakes Software VER 0.01")
  
 window.geometry('800x600')
 
 fig = plt.Figure()
 canvas = FigureCanvasTkAgg(fig, window)
-canvas.draw()
+canvas.get_tk_widget().grid(row=0, column=1)
 main_body = mesh.Mesh.from_file('RaspS.stl')
 ax = mplot3d.Axes3D(fig)
 ax.add_collection3d(mplot3d.art3d.Poly3DCollection(main_body.vectors))
 scale = main_body.points.flatten('F')
 ax.auto_scale_xyz(scale, scale, scale)
 
-canvas.get_tk_widget().grid(row=1, column=1)
+
 canvas.draw()
 
 
-
+window.mainloop()
 
