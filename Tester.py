@@ -294,11 +294,11 @@ def Cub():
         
         
     
-    btnOK = tk.Button(Cubimp, text = "OK" , width=15, height=3,command=Cubcal)
+    btnOK = tk.Button(Cubimp, text = "OK" , width=8, height=1, command=Cubcal)
 
         
 
-    btnOK.grid(column=0, row=1)
+    btnOK.grid(column=0, row=1, pady=4)
     
     
 def Sph():
@@ -331,8 +331,8 @@ canvas = tk.Canvas(root, height=height*0.8, width=width*0.8, bg="white")
 canvas.create_image(width*0.3, height*0.3, image=image)
 canvas.pack()
 
-# Showing the splash screen for 5000 milliseconds, then destroying
-root.after(5000, root.destroy)
+# Showing the splash screen for 1500 milliseconds, then destroying
+root.after(1500, root.destroy)
 root.mainloop()
 print ("RaspiSnakes")
 
