@@ -51,10 +51,14 @@ class MainWin(object):
         btnOpn = tk.Button(FileFrame, image = imgOpn, width=20, height=20, command=Opn)
         btnOpn.image = imgOpn
         btnOpn.grid(column=0, row=1, padx=3)
+        imgUpd = tk.PhotoImage(file="upd.png")
+        btnUpd = tk.Button(FileFrame, image = imgUpd, width=20, height=20, command=Upd)
+        btnUpd.image = imgUpd
+        btnUpd.grid(column=0, row=2, padx=3)
         imgExt = tk.PhotoImage(file="ext.png")
         btnExt = tk.Button(FileFrame, image = imgExt, width=20, height=20, command=Ext)
         btnExt.image = imgExt
-        btnExt.grid(column=0, row=2, padx=3)
+        btnExt.grid(column=0, row=3, padx=3)
         FileFrame.grid(row=0, column=0, sticky="nsew", padx=10)
         
         # Create buttons
