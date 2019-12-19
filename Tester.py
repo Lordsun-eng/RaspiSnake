@@ -332,7 +332,7 @@ canvas.create_image(width*0.3, height*0.3, image=image)
 canvas.pack()
 
 # Showing the splash screen for 5000 milliseconds, then destroying
-root.after(1, root.destroy)
+root.after(5000, root.destroy)
 root.mainloop()
 print ("RaspiSnakes")
 
