@@ -97,6 +97,7 @@ class MainWin(object):
 
             fig = plt.Figure()
             # To be able to rotate we have to draw an empty canvas first before plotting a figure
+            global canvas, ax
             canvas = FigureCanvasTkAgg(fig, self.parent1)
             canvas.draw()
             
@@ -235,7 +236,14 @@ def Ext():
     quit()
 
 def Upd():
-    os.execl(sys.executable, sys.executable, *sys.argv)
+    #os.execl(sys.executable, sys.executable, *sys.argv)
+    ax.clear()
+    currfile = mesh.Mesh.from_file('RaspS.stl')
+    ax.add_collection3d(mplot3d.art3d.Poly3DCollection(currfile.vectors))
+    
+    scale = currfile.points.flatten('F')
+    ax.auto_scale_xyz(scale, scale, scale)
+    canvas.draw()
 
 def Save():
     plt.savefig(name)
