@@ -18,7 +18,7 @@ class MainWin(object):
 
     def __init__(self):
         self.window = tk.Tk()
-        self.window.title("RS Design VER 0.00")
+        self.window.title("RS Design VER 0.0.1")
         self.window.iconbitmap('RaspSNK.ico')
         self.create_widgets()
 
@@ -148,24 +148,6 @@ class MainWin(object):
             l_x.grid(row = 0,  column=0)
             l_y.grid(row = 0,  column=1)
 
-# For now this part doesn't seem to have any effect on the program:
-
-#__saved_context__ = {}
-
-#def saveContext():
-    #import sys
-    #__saved_context__.update(sys.modules[__name__].__dict__)
-
-#def restoreContext():
-    #import sys
-    #names = sys.modules[__name__].__dict__.keys()
-    #for n in list(names):
-        #if n not in __saved_context__:
-            #del sys.modules[__name__].__dict__[n]
-#clear = restoreContext
-#saveContext()
-#clear()
-
 def find_mins_maxs(obj):
     minx = maxx = miny = maxy = minz = maxz = None
     for p in obj.points:
@@ -220,23 +202,13 @@ def copy_obj(obj, dims, num_rows, num_cols, num_layers):
                     translate(_copy, h, h / 10., layer, 'z')
                 copies.append(_copy)
     return copies
-def New():
-#    lb = Label(program.window, text=35*" ")
-#    lb.grid(column=2, row=0)
 
-#    fig = plt.figure(figsize=(6,5), dpi=100)
-#    canvas = FigureCanvasTkAgg(fig, program.window)
-#    canvas.draw()
-#    ax = fig.add_subplot(111, projection='3d')
-    
+def New():
     data = np.zeros(100, dtype=mesh.Mesh.dtype)
     New = mesh.Mesh(data, remove_empty_areas=False)
     New.save('RaspS.stl', mode=stl.Mode.ASCII)
     main_body = mesh.Mesh.from_file('RaspS.stl')
-    
-    os.execl(sys.executable, sys.executable, *sys.argv)
-    #program.window.update_idletasks()
-    #program.window.update()
+
         
 def Opn():
 
@@ -259,13 +231,12 @@ def Opn():
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
     main_body = mesh.Mesh.from_file('RaspS.stl')
 
-    os.execl(sys.executable, sys.executable, *sys.argv)
-    #program.window.update()
-    #program.window.update_idletasks()
 
 def Ext():
     quit()
 
+def Upd():
+    os.execl(sys.executable, sys.executable, *sys.argv)
 
 def Save():
     plt.savefig(name)
