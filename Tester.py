@@ -210,6 +210,7 @@ def New():
     New.save('RaspS.stl', mode=stl.Mode.ASCII)
     main_body = mesh.Mesh.from_file('RaspS.stl')
 
+    tk.messagebox.showinfo("Refresh", "Please press the refresh button to update the plot.")
         
 def Opn():
 
@@ -231,6 +232,8 @@ def Opn():
 
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
     main_body = mesh.Mesh.from_file('RaspS.stl')
+
+    tk.messagebox.showinfo("Refresh", "Please press the refresh button to update the plot.")
 
 def Ext():
     quit()
@@ -332,8 +335,8 @@ canvas = tk.Canvas(root, height=height*0.8, width=width*0.8, bg="white")
 canvas.create_image(width*0.3, height*0.3, image=image)
 canvas.pack()
 
-# Showing the splash screen for 2000 milliseconds, then destroying
-root.after(2000, root.destroy)
+# Showing the splash screen for 2500 milliseconds, then destroying
+root.after(2500, root.destroy)
 root.mainloop()
 print ("RaspiSnakes")
 
