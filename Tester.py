@@ -243,7 +243,12 @@ def Upd():
     ax.clear()
     currfile = mesh.Mesh.from_file('RaspS.stl')
     ax.add_collection3d(mplot3d.art3d.Poly3DCollection(currfile.vectors))
-    
+
+    minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(currfile)
+    w1 = maxx - minx
+    l1 = maxy - miny
+    h1 = maxz - minz
+
     scale = currfile.points.flatten('F')
     ax.auto_scale_xyz(scale, scale, scale)
     canvas.draw()
