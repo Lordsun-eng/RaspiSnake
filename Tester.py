@@ -22,7 +22,6 @@ class MainWin(object):
         self.window.iconbitmap('RaspSNK.ico')
         self.create_widgets()
 
-
     def create_widgets(self):
         self.window['padx'] = 10
         self.window['pady'] = 10
@@ -107,7 +106,6 @@ class MainWin(object):
             scale = main_body.points.flatten('F')
             ax.auto_scale_xyz(scale, scale, scale)
             
-             
             return canvas
 
         def plot_toolbar(self, canvas):
@@ -172,7 +170,6 @@ def find_mins_maxs(obj):
             minz = min(p[stl.Dimension.Z], minz)
     return minx, maxx, miny, maxy, minz, maxz
 
-
 def translate(_solid, step, padding, multiplier, axis):
     if 'x' == axis:
         items = 0, 3, 6
@@ -185,7 +182,6 @@ def translate(_solid, step, padding, multiplier, axis):
 
     # _solid.points.shape == [:, ((x, y, z), (x, y, z), (x, y, z))]
     _solid.points[:, items] += (step * multiplier) + (padding * multiplier)
-
 
 def copy_obj(obj, dims, num_rows, num_cols, num_layers):
     w, l, h = dims
@@ -234,7 +230,6 @@ def Opn():
 
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
     main_body = mesh.Mesh.from_file('RaspS.stl')
-
 
 def Ext():
     quit()
@@ -299,14 +294,12 @@ def Cub():
         
 
     btnOK.grid(column=0, row=1, pady=4)
-    
-    
+   
 def Sph():
     pass
     
 def Con():
     pass
-
 
 # Using an existing stl file
 main_body = mesh.Mesh.from_file('RaspS.stl')
@@ -331,8 +324,8 @@ canvas = tk.Canvas(root, height=height*0.8, width=width*0.8, bg="white")
 canvas.create_image(width*0.3, height*0.3, image=image)
 canvas.pack()
 
-# Showing the splash screen for 1500 milliseconds, then destroying
-root.after(1500, root.destroy)
+# Showing the splash screen for 2000 milliseconds, then destroying
+root.after(2000, root.destroy)
 root.mainloop()
 print ("RaspiSnakes")
 
