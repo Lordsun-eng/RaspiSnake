@@ -1,4 +1,5 @@
 # Shams Torabnia & Shukhrat Khuseynov
+## RS Design CAD software
 ## GUI & STL editor & STL 3D plotting
 ## version 0.01
 
