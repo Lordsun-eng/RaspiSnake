@@ -18,7 +18,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 
 global main_body
 # Using an existing stl file:
-main_body = mesh.Mesh.from_file('New.stl') #New.stl is used instead of RaspS.stl
+main_body = mesh.Mesh.from_file('Empty.stl') #Empty.stl is used instead of RaspS.stl
                            
 def find_mins_maxs(obj):
     """
@@ -98,7 +98,7 @@ def New():
     
     translate(New, w1, w1 / 10., 3, 'x')
     New.save('RaspS.stl', mode=stl.Mode.ASCII) 
-    new_main_body = mesh.Mesh.from_file('New.stl') #New.stl is used instead of RaspS.stl
+    new_main_body = mesh.Mesh.from_file('Empty.stl') #Empty.stl is used instead of RaspS.stl
     ax.add_collection3d(mplot3d.art3d.Poly3DCollection(new_main_body.vectors))
     scale = new_main_body.points.flatten('F')
     ax.auto_scale_xyz(scale, scale, scale)
@@ -139,22 +139,23 @@ def Sav():
         FSave.grab_release()
         FSave.destroy()
         
-    FSave=tk.Toplevel() 
+    FSave=tk.Toplevel()
+    FSave.title("Save as the STL file.")
     FSave.grab_set()
-    FSave.overrideredirect(True)
+    #FSave.overrideredirect(True)
     SFrame=tk.Frame(FSave)
     tk.Label(SFrame, text="File Name:").grid(row=0)
     fileN = tk.Entry(SFrame)
-    fileN.insert(tk.END, "Rasp.stl")
+    fileN.insert(tk.END, "Figure")
     fileN.grid(row=0, column=1)
               
     CFrame=tk.Frame(FSave)
     btnOK = tk.Button(CFrame, text = "OK" , width=10, height=1,command=SOK)
     btnCLC= tk.Button(CFrame, text = "Cancel" , width=10, height=1,command=SCLC)
-    btnOK.grid(column=0, row=1)
-    btnCLC.grid(column=1, row=1)
-    SFrame.grid(column=0, row=0,padx=10,pady=20)
-    CFrame.grid(column=0, row=1,padx=10,pady=20)
+    btnOK.grid(column=0, row=1, padx=2.5)
+    btnCLC.grid(column=1, row=1, padx=2.5)
+    SFrame.grid(column=0, row=0, padx=10, pady=10)
+    CFrame.grid(column=0, row=1, padx=10, pady=10)
     
     
 
@@ -225,8 +226,9 @@ def Cub():
         Cubimp.destroy()
     
     Cubimp=tk.Toplevel()
+    Cubimp.title("Set the Box parameters.")
     Cubimp.grab_set()
-    Cubimp.overrideredirect(True)
+    #Cubimp.overrideredirect(True)
     
     Cuframe=tk.Frame(Cubimp)
     tk.Label(Cuframe, text="Height").grid(row=0)
@@ -259,14 +261,14 @@ def Cub():
     xc.grid(row=3, column=1)
     yc.grid(row=4, column=1)
     zc.grid(row=5, column=1)
-    Cuframe.grid(row=0, column=0, padx=10, pady=20)
+    Cuframe.grid(row=0, column=0, padx=10, pady=10)
             
     CFrame=tk.Frame(Cubimp)
     btnOK = tk.Button(CFrame, text = "OK" , width=10, height=1,command=Cubcal)
     btnCLC= tk.Button(CFrame, text = "Cancel" , width=10, height=1,command=CubCLC)
-    btnOK.grid(column=0, row=1, padx=10, pady=20)
-    btnCLC.grid(column=1, row=1, padx=10, pady=20)
-    CFrame.grid(column=0, row=1, padx=10, pady=20)
+    btnOK.grid(column=0, row=1, padx=2.5)
+    btnCLC.grid(column=1, row=1, padx=2.5)
+    CFrame.grid(column=0, row=1, padx=10, pady=10)
       
 def Sph():
     def Sphcal():
@@ -368,9 +370,10 @@ def Sph():
         Sphimp.grab_release()
         Sphimp.destroy()
         
-    Sphimp=tk.Toplevel() 
+    Sphimp=tk.Toplevel()
+    Sphimp.title("Set the Sphere parameters.")
     Sphimp.grab_set()
-    Sphimp.overrideredirect(True)
+    #Sphimp.overrideredirect(True)
     
     Spframe=tk.Frame(Sphimp)
     tk.Label(Spframe, text="Radius").grid(row=0)
@@ -393,14 +396,14 @@ def Sph():
     xc.grid(row=1, column=1)
     yc.grid(row=2, column=1)
     zc.grid(row=3, column=1)
-    Spframe.grid(row=0, column=0, padx=10, pady=20)
+    Spframe.grid(row=0, column=0, padx=10, pady=10)
             
     CFrame=tk.Frame(Sphimp)
     btnOK = tk.Button(CFrame, text = "OK" , width=10, height=1,command=Sphcal)
     btnCLC= tk.Button(CFrame, text = "Cancel" , width=10, height=1,command=SphCLC)
-    btnOK.grid(column=0, row=1, padx=10, pady=20)
-    btnCLC.grid(column=1, row=1, padx=10, pady=20)
-    CFrame.grid(column=0, row=1, padx=10, pady=20)
+    btnOK.grid(column=0, row=1, padx=2.5)
+    btnCLC.grid(column=1, row=1, padx=2.5)
+    CFrame.grid(column=0, row=1, padx=10, pady=10)
 
         
 def Con():
@@ -475,9 +478,10 @@ def Con():
         Conimp.grab_release()
         Conimp.destroy()
         
-    Conimp=tk.Toplevel() 
+    Conimp=tk.Toplevel()
+    Conimp.title("Set the Cone parameters.")
     Conimp.grab_set()
-    Conimp.overrideredirect(True)
+    #Conimp.overrideredirect(True)
     
     Coframe=tk.Frame(Conimp)
     tk.Label(Coframe, text="Radius").grid(row=0)
@@ -504,21 +508,22 @@ def Con():
     xc.grid(row=2, column=1)
     yc.grid(row=3, column=1)
     zc.grid(row=4, column=1)
-    Coframe.grid(row=0, column=0, padx=10, pady=20)
+    Coframe.grid(row=0, column=0, padx=10, pady=10)
             
     CFrame=tk.Frame(Conimp)
     btnOK = tk.Button(CFrame, text = "OK" , width=10, height=1,command=Concal)
     btnCLC= tk.Button(CFrame, text = "Cancel" , width=10, height=1,command=ConCLC)
-    btnOK.grid(column=0, row=1, padx=10, pady=20)
-    btnCLC.grid(column=1, row=1, padx=10, pady=20)
-    CFrame.grid(column=0, row=1, padx=10, pady=20)
+    btnOK.grid(column=0, row=1, padx=2.5)
+    btnCLC.grid(column=1, row=1, padx=2.5)
+    CFrame.grid(column=0, row=1, padx=10, pady=10)
 def MshP():
     Mesh = mesh.Mesh.from_file('RaspS.stl')
 
     volume, cog, inertia = Mesh.get_mass_properties()
-    PRP=tk.Toplevel() 
+    PRP=tk.Toplevel()
+    PRP.title("STL parameters.")
     PRP.grab_set()
-    PRP.overrideredirect(True)
+    #PRP.overrideredirect(True)
     
     Coframe=tk.Frame(PRP)
     tk.Label(Coframe, text="Volume                                  = {0}".format(volume)).grid(row=0)
@@ -531,7 +536,7 @@ def MshP():
         PRP.grab_release()
         PRP.destroy()        
     btnOK = tk.Button(PRP, text = "OK" , width=10, height=1,command=PRPOK)
-    btnOK.grid(column=0, row=1)
+    btnOK.grid(column=0, row=1, pady=5)
  
 
 # Splash screen (creating a splash screen, 80% of display screen size, centered, displaying a GIF image with needed info, disappearing after 5 seconds)
@@ -610,7 +615,7 @@ imgPRP = tk.PhotoImage(file="PRP.png")
 btnPRP = tk.Button(PPFrame, image =imgPRP, width=20, height=20, command=MshP)
 btnPRP.image = imgPRP
 btnPRP.grid(column=0, row=0)
-PPFrame.grid(row=2, column=1, sticky="nsew", padx=10)
+PPFrame.grid(row=2, column=1, sticky="nsew", padx=10, pady=5)
 
 
 window.title("Rasp Snakes Software VER 0.01")
@@ -626,7 +631,6 @@ ax = mplot3d.Axes3D(fig)
 ax.add_collection3d(mplot3d.art3d.Poly3DCollection(main_body.vectors))
 scale = main_body.points.flatten('F')
 ax.auto_scale_xyz(scale, scale, scale)
-
 
 canvas.draw()
 
