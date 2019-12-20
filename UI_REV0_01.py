@@ -83,8 +83,16 @@ w1 = maxx - minx
 l1 = maxy - miny
 h1 = maxz - minz
 def New():
+    ax.clear()
     data = np.zeros(100, dtype=mesh.Mesh.dtype)
     New = mesh.Mesh(data, remove_empty_areas=False)
+    new = copy_obj(New, (w1, l1, h1), 1, 1, 1)
+    minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(New)
+    w2 = maxx - minx
+    l2 = maxy - miny
+    h2 = maxz - minz
+    
+    translate(New, w1, w1 / 10., 3, 'x')
     New.save('RaspS.stl', mode=stl.Mode.ASCII)
     new_main_body = mesh.Mesh.from_file('RaspS.stl')
     ax.add_collection3d(mplot3d.art3d.Poly3DCollection(new_main_body.vectors))
@@ -116,12 +124,36 @@ def Opn():
     canvas.draw()
     
 def Sav():
-    window.filename=tk.filedialog.asksaveasfile(initialdir = "/",title = "Select file",filetypes = [("STL files","*.stl")])
-    fileout =window.filename+".stl"
-    loc_main_body = mesh.Mesh.from_file('RaspS.stl')
-    loc_main_body.save(fileout, mode=stl.Mode.ASCII)  # save as ASCII
+    def SOK():
+        sav_main_body = mesh.Mesh.from_file('RaspS.stl')
+        F=''.join(e for e in fileN.get() if e.isalnum())+'.stl'
+          
+        sav_main_body.save(F, mode=stl.Mode.ASCII)  # save as ASCII
+        FSave.grab_release()
+        FSave.destroy()
+    def SCLC():
+        FSave.grab_release()
+        FSave.destroy()
+        
+    FSave=tk.Toplevel() 
+    FSave.grab_set()
+    FSave.overrideredirect(True)
+    SFrame=tk.Frame(FSave)
+    tk.Label(SFrame, text="File Name:").grid(row=0)
+    fileN = tk.Entry(SFrame)
+    fileN.insert(tk.END, "Rasp.stl")
+    fileN.grid(row=0, column=1)
+              
+    CFrame=tk.Frame(FSave)
+    btnOK = tk.Button(CFrame, text = "OK" , width=10, height=1,command=SOK)
+    btnCLC= tk.Button(CFrame, text = "Cancel" , width=10, height=1,command=SCLC)
+    btnOK.grid(column=0, row=1)
+    btnCLC.grid(column=1, row=1)
+    SFrame.grid(column=0, row=0,padx=10,pady=20)
+    CFrame.grid(column=0, row=1,padx=10,pady=20)
     
-    name.close
+    #sav_main_body.save(window.filename, mode=stl.Mode.ASCII)  # save as ASCII
+    
 
 def Ext():
     quit()
@@ -507,7 +539,7 @@ root.geometry('%dx%d+%d+%d' % (width*0.6, height*0.6, width*0.1, height*0.1))
 image = tk.PhotoImage(file="Splash.gif")
 canvas = tk.Canvas(root, height=height*0.6, width=width*0.6, bg="white")
 canvas.create_image(width*0.6/2, height*0.6/2, image=image)
-
+canvas.pack()
 
 # Showing the splash screen for 2000 milliseconds then destroying
 root.after(2000, root.destroy)
