@@ -1,8 +1,7 @@
 # Shams Torabnia & Shukhrat Khuseynov
-# GUI & 3D plotting & STL editor (?)
-# version 1.0.0
+## GUI & 3D plotting & STL editor 
+## version 0.01
 
-# (3d plotting algorithms were obtained from freely shared codes [stackoverflow, github, etc.])
 
 import stl
 import math
@@ -21,6 +20,10 @@ global main_body
 main_body = mesh.Mesh.from_file('RaspS.stl')
 
 def find_mins_maxs(obj):
+    """
+    This Function works for obtaining
+    the maximum dimentions of our topology
+    """
     minx = maxx = miny = maxy = minz = maxz = None
     for p in obj.points:
         # p contains (x, y, z)
@@ -152,13 +155,16 @@ def Sav():
     SFrame.grid(column=0, row=0,padx=10,pady=20)
     CFrame.grid(column=0, row=1,padx=10,pady=20)
     
-    #sav_main_body.save(window.filename, mode=stl.Mode.ASCII)  # save as ASCII
     
 
 def Ext():
+    window.destroy()
     quit()
     
 def Cub():
+    """
+    This Function works for creating a box with given dimensions
+    """
     def Cubcal():
         HWL=[float(hc.get()), float(wc.get()), float(lc.get())]
         XYZ=[float(xc.get()),float(yc.get()),float(zc.get())]
