@@ -17,7 +17,10 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 global main_body
 # Using the existing stl file:
 main_body = mesh.Mesh.from_file('Empty.stl') #Empty.stl is used instead of RaspS.stl for the proper scale.
-                           
+
+# - - - - - - - - - - - - - - - - - - - - -
+# fundamental STL processing functions
+
 def find_mins_maxs(obj):
     """
     This Function works for obtaining
@@ -59,7 +62,6 @@ def translate(_solid, step, padding, multiplier, axis):
     else:
         raise RuntimeError('Unknown axis %r, expected x, y or z' % axis)
 
-    # _solid.points.shape == [:, ((x, y, z), (x, y, z), (x, y, z))]
     _solid.points[:, items] += (step * multiplier) + (padding * multiplier)
 
 def copy_obj(obj, dims, num_rows, num_cols, num_layers):
@@ -73,12 +75,11 @@ def copy_obj(obj, dims, num_rows, num_cols, num_layers):
     for layer in range(num_layers):
         for row in range(num_rows):
             for col in range(num_cols):
-                # skip the position where original being copied is
+                # skipping the position where original being copied is
                 if row == 0 and col == 0 and layer == 0:
                     continue
                 _copy = mesh.Mesh(obj.data.copy())
-                # pad the space between objects by 10% of the dimension being
-                # translated
+                # padding the space between objects by 10% of the dimension being translated
                 if col != 0:
                     translate(_copy, w, w / 10., col, 'x')
                 if row != 0:
@@ -88,13 +89,18 @@ def copy_obj(obj, dims, num_rows, num_cols, num_layers):
                 copies.append(_copy)
     return copies
 
+# - - - - - - - - - - - - - - - - - - - - -
 
 
-# find the max dimensions, so we can know the bounding box, getting the height, width, length (because these are the step size)...
+# finding the max dimensions by getting the height, width, length
 minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(main_body)
 w1 = maxx - minx
 l1 = maxy - miny
 h1 = maxz - minz
+
+# - - - - - - - - - - - - - - - - - - - - -
+# functions of File toolbox
+
 def New():
     """
     This Function creates and plots an empty STL file.
@@ -183,17 +189,17 @@ def Sav():
     btnCLC.grid(column=1, row=1, padx=2.5)
     SFrame.grid(column=0, row=0, padx=10, pady=10)
     CFrame.grid(column=0, row=1, padx=10, pady=10)
-    
-    
 
 def Ext():
     """
     This Function closes the window of our program.
-    """
-    
+    """    
     window.destroy()
     quit()
-    
+
+# - - - - - - - - - - - - - - - - - - - - -
+# functions of Create toolbox
+
 def Cub():
     """
     This Function works for creating a Box with given dimensions.
@@ -230,7 +236,7 @@ def Cub():
             [0,1,5],
             [0,5,4]])
         
-        # Create the mesh
+        # Creating the mesh
         cube = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
         for i, f in enumerate(faces):
             for j in range(3):
@@ -574,6 +580,10 @@ def Con():
     btnOK.grid(column=0, row=1, padx=2.5)
     btnCLC.grid(column=1, row=1, padx=2.5)
     CFrame.grid(column=0, row=1, padx=10, pady=10)
+    
+# - - - - - - - - - - - - - - - - - - - - -
+# function of STL parameters
+
 def MshP():
     """
     This Function opens a window with STL parameters.
@@ -602,7 +612,9 @@ def MshP():
         PRP.destroy()        
     btnOK = tk.Button(PRP, text = "OK" , width=10, height=1,command=PRPOK)
     btnOK.grid(column=0, row=1, pady=5)
- 
+
+# - - - - - - - - - - - - - - - - - - - - - 
+# main code
 
 # Creating the splash screen
 root = tk.Tk()
@@ -625,11 +637,12 @@ print ("RS Design is Runing")
 
 # Starting the main window 
 window = tk.Tk()
-window['padx'] = 10
-window['pady'] = 10
+window['padx'] = 5
+window['pady'] = 5
 window.iconbitmap('RaspSNK.ico')
+window.title("Rasp Snakes Software VER 0.01")
+window.geometry('750x560')
 
-# - - - - - - - - - - - - - - - - - - - - -
 # File toolbox
 FileFrame = tk.Frame(window)
 lb = Label(FileFrame)
@@ -672,7 +685,7 @@ btnCon.grid(column=0, row=3)
 
 CrtFrame.grid(row=0, column=2, sticky="nsew", padx=10)
 
-#STL Properties
+#STL Properties button
 PPFrame = tk.Frame(window)
 lb = Label(PPFrame)
 lb.grid(column=0, row=0)
@@ -682,25 +695,23 @@ btnPRP.image = imgPRP
 btnPRP.grid(column=0, row=0)
 PPFrame.grid(row=2, column=1, padx=10, pady=5)
 
-
-window.title("Rasp Snakes Software VER 0.01") 
-window.geometry('750x560')
-
+#Initiating canvas for plotting
 fig = plt.Figure()
 canvas = FigureCanvasTkAgg(fig, window)
 canvas.get_tk_widget().grid(row=0, column=1)
 main_body = mesh.Mesh.from_file('RaspS.stl')
 ax = mplot3d.Axes3D(fig)
 
+#Adding Navigation tools
 NavFrame = tk.Frame(window)
 toolbar = NavigationToolbar2Tk(canvas, NavFrame)
 toolbar.update()
 NavFrame.grid(row=1, column=1, sticky="nsew")
-      
+
+#Plotting the last saved shape      
 ax.add_collection3d(mplot3d.art3d.Poly3DCollection(main_body.vectors))
 scale = main_body.points.flatten('F')
 ax.auto_scale_xyz(scale, scale, scale)
-
 canvas.draw()
 
 
