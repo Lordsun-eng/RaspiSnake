@@ -12,11 +12,10 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationTool
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 global imgNew, imgOpn,imgExt, imgCub,imgSph,imgPyr
-def reset(self):
-    self.__init__()mode=stl.Mode.ASCII
+
     
 class MainWin(object):
-    
+    main_body = mesh.Mesh.from_file('RaspS.stl')
 
     def __init__(self):
         self.window = tk.Tk()
@@ -224,7 +223,7 @@ def New():
     New.save('RaspS.stl', mode=stl.Mode.ASCII)
     main_body = mesh.Mesh.from_file('RaspS.stl')
 
-    reset(program)
+    #reset(program)
     #os.execl(sys.executable, sys.executable, *sys.argv)
     #program.window.update_idletasks()
     #program.window.update()
@@ -341,8 +340,13 @@ def Con():
    
 # Using an existing stl file
 #main_body = mesh.Mesh.from_file('RaspS.stl')
+main_body = mesh.Mesh.from_file('RaspS.stl')
 
-
+# Finding the max dimensions & getting the height, width, length
+minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(main_body)
+w1 = maxx - minx
+l1 = maxy - miny
+h1 = maxz - minz
 
 # Creating the splash screen
 root = tk.Tk()

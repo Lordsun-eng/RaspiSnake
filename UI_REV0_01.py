@@ -1,5 +1,5 @@
 # Shams Torabnia & Shukhrat Khuseynov
-## GUI & 3D plotting & STL editor 
+## GUI & STL editor & STL 3D plotting 
 ## version 0.01
 
 
@@ -12,13 +12,14 @@ from stl import mesh
 from tkinter.ttk import *
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
+from cycler import cycler
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 global main_body
 # Using an existing stl file:
-main_body = mesh.Mesh.from_file('RaspS.stl')
-
+main_body = mesh.Mesh.from_file('New.stl') #New.stl is used instead of RaspS.stl
+                           
 def find_mins_maxs(obj):
     """
     This Function works for obtaining
@@ -96,8 +97,8 @@ def New():
     h2 = maxz - minz
     
     translate(New, w1, w1 / 10., 3, 'x')
-    New.save('RaspS.stl', mode=stl.Mode.ASCII)
-    new_main_body = mesh.Mesh.from_file('RaspS.stl')
+    New.save('RaspS.stl', mode=stl.Mode.ASCII) 
+    new_main_body = mesh.Mesh.from_file('New.stl') #New.stl is used instead of RaspS.stl
     ax.add_collection3d(mplot3d.art3d.Poly3DCollection(new_main_body.vectors))
     scale = new_main_body.points.flatten('F')
     ax.auto_scale_xyz(scale, scale, scale)
@@ -258,14 +259,14 @@ def Cub():
     xc.grid(row=3, column=1)
     yc.grid(row=4, column=1)
     zc.grid(row=5, column=1)
-    Cuframe.grid(row=0, column=0)
+    Cuframe.grid(row=0, column=0, padx=10, pady=20)
             
     CFrame=tk.Frame(Cubimp)
     btnOK = tk.Button(CFrame, text = "OK" , width=10, height=1,command=Cubcal)
     btnCLC= tk.Button(CFrame, text = "Cancel" , width=10, height=1,command=CubCLC)
-    btnOK.grid(column=0, row=1)
-    btnCLC.grid(column=1, row=1)
-    CFrame.grid(column=0, row=1)
+    btnOK.grid(column=0, row=1, padx=10, pady=20)
+    btnCLC.grid(column=1, row=1, padx=10, pady=20)
+    CFrame.grid(column=0, row=1, padx=10, pady=20)
       
 def Sph():
     def Sphcal():
@@ -392,14 +393,14 @@ def Sph():
     xc.grid(row=1, column=1)
     yc.grid(row=2, column=1)
     zc.grid(row=3, column=1)
-    Spframe.grid(row=0, column=0)
+    Spframe.grid(row=0, column=0, padx=10, pady=20)
             
     CFrame=tk.Frame(Sphimp)
     btnOK = tk.Button(CFrame, text = "OK" , width=10, height=1,command=Sphcal)
     btnCLC= tk.Button(CFrame, text = "Cancel" , width=10, height=1,command=SphCLC)
-    btnOK.grid(column=0, row=1)
-    btnCLC.grid(column=1, row=1)
-    CFrame.grid(column=0, row=1)
+    btnOK.grid(column=0, row=1, padx=10, pady=20)
+    btnCLC.grid(column=1, row=1, padx=10, pady=20)
+    CFrame.grid(column=0, row=1, padx=10, pady=20)
 
         
 def Con():
@@ -503,14 +504,14 @@ def Con():
     xc.grid(row=2, column=1)
     yc.grid(row=3, column=1)
     zc.grid(row=4, column=1)
-    Coframe.grid(row=0, column=0)
+    Coframe.grid(row=0, column=0, padx=10, pady=20)
             
     CFrame=tk.Frame(Conimp)
     btnOK = tk.Button(CFrame, text = "OK" , width=10, height=1,command=Concal)
     btnCLC= tk.Button(CFrame, text = "Cancel" , width=10, height=1,command=ConCLC)
-    btnOK.grid(column=0, row=1)
-    btnCLC.grid(column=1, row=1)
-    CFrame.grid(column=0, row=1)
+    btnOK.grid(column=0, row=1, padx=10, pady=20)
+    btnCLC.grid(column=1, row=1, padx=10, pady=20)
+    CFrame.grid(column=0, row=1, padx=10, pady=20)
 def MshP():
     Mesh = mesh.Mesh.from_file('RaspS.stl')
 
@@ -614,13 +615,14 @@ PPFrame.grid(row=2, column=1, sticky="nsew", padx=10)
 
 window.title("Rasp Snakes Software VER 0.01")
  
-window.geometry('800x600')
+window.geometry('750x550')
 
 fig = plt.Figure()
 canvas = FigureCanvasTkAgg(fig, window)
 canvas.get_tk_widget().grid(row=0, column=1)
 main_body = mesh.Mesh.from_file('RaspS.stl')
 ax = mplot3d.Axes3D(fig)
+       
 ax.add_collection3d(mplot3d.art3d.Poly3DCollection(main_body.vectors))
 scale = main_body.points.flatten('F')
 ax.auto_scale_xyz(scale, scale, scale)
