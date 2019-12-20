@@ -1,6 +1,6 @@
 # Shams Torabnia & Shukhrat Khuseynov
 # GUI & 3D plotting & STL editor (?)
-# version 1.0.0
+# version 0.0.0
 
 # (3d plotting algorithms were obtained from freely shared codes [stackoverflow, github, etc.])
 
@@ -616,7 +616,7 @@ root.geometry('%dx%d+%d+%d' % (width*0.6, height*0.6, width*0.1, height*0.1))
 image = tk.PhotoImage(file="Splash.gif")
 canvas = tk.Canvas(root, height=height*0.6, width=width*0.6, bg="white")
 canvas.create_image(width*0.6/2, height*0.6/2, image=image)
-canvas.create_text(width*0.6/8, height*0.6/8, text="VER 1.0.0 ")
+canvas.create_text(width*0.6/8, height*0.6/8, text="VER 0.0.0 ")
 canvas.pack()
 
 # Showing the splash screen for 5000 milliseconds then destroying
@@ -672,7 +672,7 @@ btnParal = Button(PlotFrame, text="Parallelepiped", width=16, command=Paral)
 btnParal.grid(column=0, row=5, pady=3)
 PlotFrame.grid(row=2, column=0, sticky="nsew", padx=31, pady=45)
 
-window.title("Rasp Snakes Software VER 1.0.0")
+window.title("Rasp Snakes Software VER 0.0.0")
  
 window.geometry('800x600')
 

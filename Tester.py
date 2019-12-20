@@ -20,7 +20,7 @@ class MainWin(object):
 
     def __init__(self):
         self.window = tk.Tk()
-        self.window.title("RS Design VER 0.00")
+        self.window.title("RS Design VER 0.0.1")
         self.window.iconbitmap('RaspSNK.ico')
         self.create_widgets()
         main_body = mesh.Mesh.from_file('RaspS.stl')
@@ -29,6 +29,7 @@ class MainWin(object):
         w1 = maxx - minx
         l1 = maxy - miny
         h1 = maxz - minz
+
 
     def create_widgets(self):
         self.window['padx'] = 10
@@ -58,13 +59,17 @@ class MainWin(object):
         btnOpn = tk.Button(FileFrame, image = imgOpn, width=20, height=20, command=Opn)
         btnOpn.image = imgOpn
         btnOpn.grid(column=0, row=1, padx=3)
+        imgUpd = tk.PhotoImage(file="upd.png")
+        btnUpd = tk.Button(FileFrame, image = imgUpd, width=20, height=20, command=Upd)
+        btnUpd.image = imgUpd
+        btnUpd.grid(column=0, row=2, padx=3)
         imgExt = tk.PhotoImage(file="ext.png")
         btnExt = tk.Button(FileFrame, image = imgExt, width=20, height=20, command=Ext)
         btnExt.image = imgExt
-        btnExt.grid(column=0, row=2, padx=3)
+        btnExt.grid(column=0, row=3, padx=3)
         FileFrame.grid(row=0, column=0, sticky="nsew", padx=10)
         
-        # Create buttons
+        # Figure creation buttons
         CrtFrame = tk.Frame(self.window)
         lb = Label(CrtFrame)
         lb.grid(column=0, row=0)
@@ -101,6 +106,7 @@ class MainWin(object):
 
             fig = plt.Figure()
             # To be able to rotate we have to draw an empty canvas first before plotting a figure
+            global canvas, ax
             canvas = FigureCanvasTkAgg(fig, self.parent1)
             canvas.draw()
             
@@ -110,7 +116,6 @@ class MainWin(object):
             scale = main_body.points.flatten('F')
             ax.auto_scale_xyz(scale, scale, scale)
             
-             
             return canvas
 
         def plot_toolbar(self, canvas):
@@ -155,7 +160,6 @@ class MainWin(object):
             l_x.grid(row = 0,  column=0)
             l_y.grid(row = 0,  column=1)
 
-    
 
 def find_mins_maxs(obj):
     minx = maxx = miny = maxy = minz = maxz = None
@@ -177,7 +181,6 @@ def find_mins_maxs(obj):
             minz = min(p[stl.Dimension.Z], minz)
     return minx, maxx, miny, maxy, minz, maxz
 
-
 def translate(_solid, step, padding, multiplier, axis):
     if 'x' == axis:
         items = 0, 3, 6
@@ -190,7 +193,6 @@ def translate(_solid, step, padding, multiplier, axis):
 
     # _solid.points.shape == [:, ((x, y, z), (x, y, z), (x, y, z))]
     _solid.points[:, items] += (step * multiplier) + (padding * multiplier)
-
 
 def copy_obj(obj, dims, num_rows, num_cols, num_layers):
     w, l, h = dims
@@ -211,16 +213,24 @@ def copy_obj(obj, dims, num_rows, num_cols, num_layers):
                     translate(_copy, h, h / 10., layer, 'z')
                 copies.append(_copy)
     return copies
+
+
+
+
 def New():
-    
+
     data = np.zeros(100, dtype=mesh.Mesh.dtype)
     New = mesh.Mesh(data, remove_empty_areas=False)
     New.save('RaspS.stl', mode=stl.Mode.ASCII)
     main_body = mesh.Mesh.from_file('RaspS.stl')
+
     reset(program)
     #os.execl(sys.executable, sys.executable, *sys.argv)
     #program.window.update_idletasks()
     #program.window.update()
+
+
+    tk.messagebox.showinfo("Refresh", "Please press the refresh button to update the plot.")
         
 def Opn():
     
@@ -239,13 +249,31 @@ def Opn():
     combined = mesh.Mesh(np.concatenate([main_body.data, OPENF.data]))
 
     combined.save('RaspS.stl', mode=stl.Mode.ASCII)  # save as ASCII
+
     program.window.update()
     #os.execl(sys.executable, sys.executable, *sys.argv)
  
+    main_body = mesh.Mesh.from_file('RaspS.stl')
+
+    tk.messagebox.showinfo("Refresh", "Please press the refresh button to update the plot.")
 
 def Ext():
     quit()
 
+def Upd():
+    #os.execl(sys.executable, sys.executable, *sys.argv)
+    ax.clear()
+    currfile = mesh.Mesh.from_file('RaspS.stl')
+    ax.add_collection3d(mplot3d.art3d.Poly3DCollection(currfile.vectors))
+
+    minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(currfile)
+    w1 = maxx - minx
+    l1 = maxy - miny
+    h1 = maxz - minz
+
+    scale = currfile.points.flatten('F')
+    ax.auto_scale_xyz(scale, scale, scale)
+    canvas.draw()
 
 def Save():
     plt.savefig(name)
@@ -299,20 +327,18 @@ def Cub():
         
         
     
-    btnOK = tk.Button(Cubimp, text = "OK" , width=15, height=3,command=Cubcal)
+    btnOK = tk.Button(Cubimp, text = "OK" , width=8, height=1, command=Cubcal)
 
         
 
-    btnOK.grid(column=0, row=1)
-    
-    
+    btnOK.grid(column=0, row=1, pady=4)
+   
 def Sph():
     pass
     
 def Con():
     pass
-
-
+   
 # Using an existing stl file
 #main_body = mesh.Mesh.from_file('RaspS.stl')
 
@@ -332,8 +358,12 @@ canvas = tk.Canvas(root, height=height*0.8, width=width*0.8, bg="white")
 canvas.create_image(width*0.3, height*0.3, image=image)
 canvas.pack()
 
+
 # Showing the splash screen for 5000 milliseconds, then destroying
 root.after(1000, root.destroy)
+
+# Showing the splash screen for 2500 milliseconds, then destroying
+root.after(2500, root.destroy)
 root.mainloop()
 print ("RaspiSnakes")
 
