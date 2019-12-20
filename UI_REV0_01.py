@@ -1,5 +1,5 @@
 # Shams Torabnia & Shukhrat Khuseynov
-## GUI & STL editor & STL 3D plotting 
+## GUI & STL editor & STL 3D plotting
 ## version 0.01
 
 
@@ -12,19 +12,18 @@ from stl import mesh
 from tkinter.ttk import *
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
-from cycler import cycler
-
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 global main_body
-# Using an existing stl file:
-main_body = mesh.Mesh.from_file('Empty.stl') #Empty.stl is used instead of RaspS.stl
+# Using the existing stl file:
+main_body = mesh.Mesh.from_file('Empty.stl') #Empty.stl is used instead of RaspS.stl for the proper scale.
                            
 def find_mins_maxs(obj):
     """
     This Function works for obtaining
-    the maximum dimentions of our topology
+    the maximum dimensions of our topology.
     """
+    
     minx = maxx = miny = maxy = minz = maxz = None
     for p in obj.points:
         # p contains (x, y, z)
@@ -46,6 +45,11 @@ def find_mins_maxs(obj):
 
 
 def translate(_solid, step, padding, multiplier, axis):
+    """
+    This Function translates the dimensions of an
+    STL shape for copying it to proper coordinates.
+    """
+    
     if 'x' == axis:
         items = 0, 3, 6
     elif 'y' == axis:
@@ -59,6 +63,11 @@ def translate(_solid, step, padding, multiplier, axis):
     _solid.points[:, items] += (step * multiplier) + (padding * multiplier)
 
 def copy_obj(obj, dims, num_rows, num_cols, num_layers):
+    """
+    This Function copies the meshes of an STL 
+    shape with the given location and coordinates.
+    """
+    
     w, l, h = dims
     copies = []
     for layer in range(num_layers):
@@ -87,6 +96,10 @@ w1 = maxx - minx
 l1 = maxy - miny
 h1 = maxz - minz
 def New():
+    """
+    This Function creates and plots an empty STL file.
+    """
+    
     ax.clear()
     data = np.zeros(100, dtype=mesh.Mesh.dtype)
     New = mesh.Mesh(data, remove_empty_areas=False)
@@ -98,7 +111,7 @@ def New():
     
     translate(New, w1, w1 / 10., 3, 'x')
     New.save('RaspS.stl', mode=stl.Mode.ASCII) 
-    new_main_body = mesh.Mesh.from_file('Empty.stl') #Empty.stl is used instead of RaspS.stl
+    new_main_body = mesh.Mesh.from_file('Empty.stl') #Empty.stl is used instead of RaspS.stl for the proper scale.
     ax.add_collection3d(mplot3d.art3d.Poly3DCollection(new_main_body.vectors))
     scale = new_main_body.points.flatten('F')
     ax.auto_scale_xyz(scale, scale, scale)
@@ -106,6 +119,10 @@ def New():
     canvas.draw()
     
 def Opn():
+    """
+    This Function opens and plots an STL file.
+    """
+    
     window.filename =  tk.filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = [("STL files","*.stl")])
     fileout =window.filename
     OPENF = mesh.Mesh.from_file(fileout)
@@ -128,7 +145,14 @@ def Opn():
     canvas.draw()
     
 def Sav():
+    """
+    This Function saves the plotted STL shape in STL format.
+    """
+    
     def SOK():
+        """
+        This Function is activated when OK is pressed.
+        """
         sav_main_body = mesh.Mesh.from_file('RaspS.stl')
         F=''.join(e for e in fileN.get() if e.isalnum())+'.stl'
           
@@ -136,6 +160,9 @@ def Sav():
         FSave.grab_release()
         FSave.destroy()
     def SCLC():
+        """
+        This Function is activated when Cancel is pressed.
+        """
         FSave.grab_release()
         FSave.destroy()
         
@@ -160,14 +187,22 @@ def Sav():
     
 
 def Ext():
+    """
+    This Function closes the window of our program.
+    """
+    
     window.destroy()
     quit()
     
 def Cub():
     """
-    This Function works for creating a box with given dimensions
+    This Function works for creating a Box with given dimensions.
     """
+    
     def Cubcal():
+        """
+        This Function is activated when OK is pressed.
+        """
         HWL=[float(hc.get()), float(wc.get()), float(lc.get())]
         XYZ=[float(xc.get()),float(yc.get()),float(zc.get())]
         
@@ -222,6 +257,9 @@ def Cub():
         Cubimp.destroy()
         
     def CubCLC():
+        """
+        This Function is activated when OK is pressed.
+        """
         Cubimp.grab_release()
         Cubimp.destroy()
     
@@ -271,7 +309,14 @@ def Cub():
     CFrame.grid(column=0, row=1, padx=10, pady=10)
       
 def Sph():
+    """
+    This Function works for creating a Sphere with given dimensions.
+    """
+    
     def Sphcal():
+        """
+        This Function is activated when OK is pressed.
+        """
         Rad=float(R.get())
         XYZ=[float(xc.get()),float(yc.get()),float(zc.get())]
         n=20
@@ -367,6 +412,9 @@ def Sph():
         Sphimp.destroy()
 
     def SphCLC():
+        """
+        This Function is activated when Cancel is pressed.
+        """
         Sphimp.grab_release()
         Sphimp.destroy()
         
@@ -407,7 +455,14 @@ def Sph():
 
         
 def Con():
+    """
+    This Function works for creating a Cone with given dimensions.
+    """
+    
     def Concal():
+        """
+        This Function is activated when OK is pressed.
+        """
         Rad=float(R.get())
         h=float(H.get())
 
@@ -475,6 +530,9 @@ def Con():
         Conimp.grab_release()
         Conimp.destroy()
     def ConCLC():
+        """
+        This Function is activated when Cancel is pressed.
+        """
         Conimp.grab_release()
         Conimp.destroy()
         
@@ -517,6 +575,10 @@ def Con():
     btnCLC.grid(column=1, row=1, padx=2.5)
     CFrame.grid(column=0, row=1, padx=10, pady=10)
 def MshP():
+    """
+    This Function opens a window with STL parameters.
+    """
+    
     Mesh = mesh.Mesh.from_file('RaspS.stl')
 
     volume, cog, inertia = Mesh.get_mass_properties()
@@ -533,13 +595,16 @@ def MshP():
     tk.Label(Coframe, text="                                          {0}").grid(row=4)
     Coframe.grid(row=0, column=0)
     def PRPOK():
+        """
+        This Function is activated when OK is pressed.
+        """
         PRP.grab_release()
         PRP.destroy()        
     btnOK = tk.Button(PRP, text = "OK" , width=10, height=1,command=PRPOK)
     btnOK.grid(column=0, row=1, pady=5)
  
 
-# Splash screen (creating a splash screen, 80% of display screen size, centered, displaying a GIF image with needed info, disappearing after 5 seconds)
+# Creating the splash screen
 root = tk.Tk()
 
 # Showing no frame
@@ -615,19 +680,23 @@ imgPRP = tk.PhotoImage(file="PRP.png")
 btnPRP = tk.Button(PPFrame, image =imgPRP, width=20, height=20, command=MshP)
 btnPRP.image = imgPRP
 btnPRP.grid(column=0, row=0)
-PPFrame.grid(row=2, column=1, sticky="nsew", padx=10, pady=5)
+PPFrame.grid(row=2, column=1, padx=10, pady=5)
 
 
-window.title("Rasp Snakes Software VER 0.01")
- 
-window.geometry('750x550')
+window.title("Rasp Snakes Software VER 0.01") 
+window.geometry('750x560')
 
 fig = plt.Figure()
 canvas = FigureCanvasTkAgg(fig, window)
 canvas.get_tk_widget().grid(row=0, column=1)
 main_body = mesh.Mesh.from_file('RaspS.stl')
 ax = mplot3d.Axes3D(fig)
-       
+
+NavFrame = tk.Frame(window)
+toolbar = NavigationToolbar2Tk(canvas, NavFrame)
+toolbar.update()
+NavFrame.grid(row=1, column=1, sticky="nsew")
+      
 ax.add_collection3d(mplot3d.art3d.Poly3DCollection(main_body.vectors))
 scale = main_body.points.flatten('F')
 ax.auto_scale_xyz(scale, scale, scale)
