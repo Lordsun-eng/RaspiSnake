@@ -223,7 +223,7 @@ def Cub():
         [XYZ[0]+HWL[0]/2, XYZ[1]+HWL[1]/2, XYZ[2]+HWL[2]/2],
         [XYZ[0]-HWL[0]/2, XYZ[1]+HWL[1]/2, XYZ[2]+HWL[2]/2]])
 
-        faces = np.array([\
+        faces = np.array([
             [0,3,1],
             [1,3,2],
             [0,4,7],
